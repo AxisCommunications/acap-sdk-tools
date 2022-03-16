@@ -72,7 +72,8 @@ std::vector<cv::Mat> calibration(const AprilTags::AprilGrid Grid, const std::str
       std::vector<cv::Vec3f>  objectpoints2 = Grid1.objpoints(detections2,Grid1.rows,Grid1.columns,Grid1.start_ID,Grid1.size,Grid1.spacing);
       int grid_points = Grid1.columns*Grid1.rows*4;
       int threshold = grid_points/4;
-      cout << "detections     " << imagepoints1.size() << endl;
+      cout << "objectpoints1     " << objectpoints1.size() << endl;
+      cout << "objectpoints2     " << objectpoints2.size() << endl;
       if(objectpoints1 == objectpoints2 && objectpoints1.size() > threshold) {
       timagepoints1.push_back(imagepoints1);
       timagepoints2.push_back(imagepoints2);
@@ -83,7 +84,7 @@ std::vector<cv::Mat> calibration(const AprilTags::AprilGrid Grid, const std::str
       }else {
           cout << "image number" << i << " rejected" << endl;
       }
-      int th =  40;
+      int th =  49;
       if(i > th){
           cout << "not enough good images" << endl;
           break;
