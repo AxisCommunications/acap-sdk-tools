@@ -17,26 +17,20 @@
 #include <opencv2/imgproc/imgproc.hpp>
 
 std::vector<cv::Mat> calibrationtest(const AprilTags::Test Grid2, const std::string imagefoldername, const int cameranumber, const int numberofimagesforcalibration, const int totalnumberofimages) {
-  AprilTags::Test Grid1 = Grid2;
-
+  AprilTags::Test Grid3 = Grid2;
+  float dist1 = Grid3.width;
+  cout << "test dist "<< dist1 << endl;
   std::vector<std::vector<cv::Vec2f>> timagepoints1;
   std::vector<std::vector<cv::Vec3f>> tobjectpoints1;
   std::vector<std::vector<cv::Vec2f>> timagepoints2;
   std::vector<std::vector<cv::Vec3f>> tobjectpoints2;
-  std::vector<std::vector<cv::Vec2f>> timp0,timp1,timp2,timp3,timp4,timp5,timp6;
-  std::vector<std::vector<cv::Vec3f>> tobj0,tobj1,tobj2,tobj3,tobj4,tobj5,tobj6;
   std::string imagefoldername0 = imagefoldername; 
   std::string cameranum = "_1";
   std::string zeross = "00000";
-  float d1 = .25;
-  float d2 = .47;
-  float d3 = .156;
-  float d4 = .271;
-  float a = .053;
   int noimg = numberofimagesforcalibration;
   int totalnoimg = totalnumberofimages;
   int accimg = 0;
-  for(int i = 30; accimg < noimg; i++){
+  for(int i = 0; accimg < noimg; i++){
       std::stringstream input_image_name1 ;
       //int ii = rand() % totalnoimg;
       string str;
@@ -68,147 +62,22 @@ std::vector<cv::Mat> calibrationtest(const AprilTags::Test Grid2, const std::str
       vector<AprilTags::TagDetection> detections1 = tagDetector.extractTags(image1);
       cv::Mat image2 = cv::imread(image_name2, cv::IMREAD_GRAYSCALE);
       vector<AprilTags::TagDetection> detections2 = tagDetector.extractTags(image2);
-      std::vector<cv::Vec2f>  imagepoints1 = Grid1.imgpointstest(detections1);     
-      std::vector<cv::Vec3f>  objectpoints1 = Grid1.objpointstest(detections1, Grid1.d11, Grid1.d12, Grid1.d13, Grid1.d14, Grid1.width);
-      std::vector<cv::Vec2f>  imagepoints2 = Grid1.imgpointstest(detections2);     
-      std::vector<cv::Vec3f>  objectpoints2 = Grid1.objpointstest(detections2, Grid1.d11, Grid1.d12, Grid1.d13, Grid1.d14, Grid1.width);
-
-      std::vector<cv::Vec2f>  imp0 = Grid1.imtag0(detections1);
-      std::vector<cv::Vec2f>  imp1 = Grid1.imtag1(detections1);
-      std::vector<cv::Vec2f>  imp2 = Grid1.imtag2(detections1);
-      std::vector<cv::Vec2f>  imp3 = Grid1.imtag3(detections1);
-      std::vector<cv::Vec2f>  imp4 = Grid1.imtag4(detections1);
-      std::vector<cv::Vec2f>  imp5 = Grid1.imtag5(detections1);
-      std::vector<cv::Vec2f>  imp6 = Grid1.imtag6(detections1);
-
-      std::vector<cv::Vec3f> obj0,obj1,obj2,obj3,obj4,obj5,obj6;
-      
-
-      for (size_t h = 0; h < imp0.size()/4; h++){
-        
-            int xo = 0;
-            int y0 = 0; 
-            cv::Vec3f topright = {a*(float)0.5 + xo, a*(float)0.5 + y0, 0};
-            cv::Vec3f topleft = {xo - a*(float)0.5, a*(float)0.5 + y0, 0};
-            cv::Vec3f bottomleft = {xo - a*(float)0.5, y0 - a*(float)0.5, 0};
-            cv::Vec3f bottomright = {xo + a*(float)0.5, y0 - a*(float)0.5, 0};
-            obj0.push_back(topright);
-            obj0.push_back(topleft);
-            obj0.push_back(bottomleft);
-            obj0.push_back(bottomright);
-
-      }
-      for (size_t h = 0; h < imp1.size()/4; h++){
-        
-            int xo = d1;
-            int y0 = 0; 
-            cv::Vec3f topright = {a*(float)0.5 + xo, a*(float)0.5 + y0, 0};
-            cv::Vec3f topleft = {xo - a*(float)0.5, a*(float)0.5 + y0, 0};
-            cv::Vec3f bottomleft = {xo - a*(float)0.5, y0 - a*(float)0.5, 0};
-            cv::Vec3f bottomright = {xo + a*(float)0.5, y0 - a*(float)0.5, 0};
-            obj1.push_back(topright);
-            obj1.push_back(topleft);
-            obj1.push_back(bottomleft);
-            obj1.push_back(bottomright);
-
-      }
-      for (size_t h = 0; h < imp2.size()/4; h++){
-        
-            int xo = d2;
-            int y0 = 0; 
-            cv::Vec3f topright = {a*(float)0.5 + xo, a*(float)0.5 + y0, 0};
-            cv::Vec3f topleft = {xo - a*(float)0.5, a*(float)0.5 + y0, 0};
-            cv::Vec3f bottomleft = {xo - a*(float)0.5, y0 - a*(float)0.5, 0};
-            cv::Vec3f bottomright = {xo + a*(float)0.5, y0 - a*(float)0.5, 0};
-            obj2.push_back(topright);
-            obj2.push_back(topleft);
-            obj2.push_back(bottomleft);
-            obj2.push_back(bottomright);
-
-      }
-      for (size_t h = 0; h < imp3.size()/4; h++){
-        
-            int xo = 0;
-            int y0 = d3; 
-            cv::Vec3f topright = {a*(float)0.5 + xo, a*(float)0.5 + y0, 0};
-            cv::Vec3f topleft = {xo - a*(float)0.5, a*(float)0.5 + y0, 0};
-            cv::Vec3f bottomleft = {xo - a*(float)0.5, y0 - a*(float)0.5, 0};
-            cv::Vec3f bottomright = {xo + a*(float)0.5, y0 - a*(float)0.5, 0};
-            obj3.push_back(topright);
-            obj3.push_back(topleft);
-            obj3.push_back(bottomleft);
-            obj3.push_back(bottomright);
-
-      }
-      for (size_t h = 0; h < imp4.size()/4; h++){
-        
-            int xo = d1;
-            int y0 = d3; 
-            cv::Vec3f topright = {a*(float)0.5 + xo, a*(float)0.5 + y0, 0};
-            cv::Vec3f topleft = {xo - a*(float)0.5, a*(float)0.5 + y0, 0};
-            cv::Vec3f bottomleft = {xo - a*(float)0.5, y0 - a*(float)0.5, 0};
-            cv::Vec3f bottomright = {xo + a*(float)0.5, y0 - a*(float)0.5, 0};
-            obj4.push_back(topright);
-            obj4.push_back(topleft);
-            obj4.push_back(bottomleft);
-            obj4.push_back(bottomright);
-
-      }
-      for (size_t h = 0; h < imp5.size()/4; h++){
-        
-            int xo = 0;
-            int y0 = d4; 
-            cv::Vec3f topright = {a*(float)0.5 + xo, a*(float)0.5 + y0, 0};
-            cv::Vec3f topleft = {xo - a*(float)0.5, a*(float)0.5 + y0, 0};
-            cv::Vec3f bottomleft = {xo - a*(float)0.5, y0 - a*(float)0.5, 0};
-            cv::Vec3f bottomright = {xo + a*(float)0.5, y0 - a*(float)0.5, 0};
-            obj5.push_back(topright);
-            obj5.push_back(topleft);
-            obj5.push_back(bottomleft);
-            obj5.push_back(bottomright);
-
-      }
-      for (size_t h = 0; h < imp6.size()/4; h++){
-        
-            int xo = d2;
-            int y0 = d4; 
-            cv::Vec3f topright = {a*(float)0.5 + xo, a*(float)0.5 + y0, 0};
-            cv::Vec3f topleft = {xo - a*(float)0.5, a*(float)0.5 + y0, 0};
-            cv::Vec3f bottomleft = {xo - a*(float)0.5, y0 - a*(float)0.5, 0};
-            cv::Vec3f bottomright = {xo + a*(float)0.5, y0 - a*(float)0.5, 0};
-            obj6.push_back(topright);
-            obj6.push_back(topleft);
-            obj6.push_back(bottomleft);
-            obj6.push_back(bottomright);
-
-      }
-      std::cout << "size of imp0: " << imp0.size() << std::endl;
-      std::cout << "size of obj0: " << obj0.size() << std::endl;
-
+      std::vector<cv::Vec2f>  imagepoints1 = Grid3.imgpointstest(detections1);     
+      std::vector<cv::Vec3f>  objectpoints1 = Grid3.objpointstest(detections1, Grid3.d11, Grid3.d12, Grid3.d13, Grid3.d14, Grid3.width);
+      std::vector<cv::Vec2f>  imagepoints2 = Grid3.imgpointstest(detections2);     
+      std::vector<cv::Vec3f>  objectpoints2 = Grid3.objpointstest(detections2, Grid3.d11, Grid3.d12, Grid3.d13, Grid3.d14, Grid3.width);      
+      // cv::Mat objectpointstestmat1 = cv::Mat(objectpoints1);
+      // cout << "M = " << endl << " "  << objectpointstestmat1 << endl << endl;
       //int grid_points = 28;
       size_t threshold = 6;
       cout << "detections     " << detections1.size() << endl;
       if(detections1.size() > threshold) {
         timagepoints1.push_back(imagepoints1);
-        timp0.push_back(imp0);
-        timp1.push_back(imp1);
-        timp2.push_back(imp2);
-        timp3.push_back(imp3);
-        timp4.push_back(imp4);
-        timp5.push_back(imp5);
-        timp6.push_back(imp6);
+
         timagepoints2.push_back(imagepoints2);
         tobjectpoints1.push_back(objectpoints1);
-        tobj0.push_back(obj0);
-        tobj1.push_back(obj1);
-        tobj2.push_back(obj2);
-        tobj3.push_back(obj3);
-        tobj4.push_back(obj4);
-        tobj5.push_back(obj5);
-        tobj6.push_back(obj6);
+
         tobjectpoints2.push_back(objectpoints2);
-    //    std::cout << "size of timp0: " << timp0.size() << std::endl;
-    //    std::cout << "size of tobj0: " << tobj0.size() << std::endl;
         cout << "image number"<< i << " accepted" << endl;
         accimg = accimg + 1;
       }else {
@@ -227,35 +96,108 @@ std::vector<cv::Mat> calibrationtest(const AprilTags::Test Grid2, const std::str
   cv::Mat cameraMatrix1,distCoeffs1,R1,T1,newcameraMatrix1;
   cv::Mat cameraMatrix2,distCoeffs2,R2,T2,newcameraMatrix2;
   int flag1 = 0;
-  flag1 |= cv::CALIB_FIX_K3;
-  double reprojtag0 = cv::calibrateCamera(tobj0, timp0, cv::Size(3,3), cameraMatrix1, distCoeffs1, R1, T1,flag1);
-  double reprojtag1 = cv::calibrateCamera(tobj1, timp1, cv::Size(3,3), cameraMatrix1, distCoeffs1, R1, T1,flag1);
-  double reprojtag2 = cv::calibrateCamera(tobj2, timp2, cv::Size(3,3), cameraMatrix1, distCoeffs1, R1, T1,flag1);
-  double reprojtag3 = cv::calibrateCamera(tobj3, timp3, cv::Size(3,3), cameraMatrix1, distCoeffs1, R1, T1,flag1);
-  double reprojtag4 = cv::calibrateCamera(tobj4, timp4, cv::Size(3,3), cameraMatrix1, distCoeffs1, R1, T1,flag1);
-  double reprojtag5 = cv::calibrateCamera(tobj5, timp5, cv::Size(3,3), cameraMatrix1, distCoeffs1, R1, T1,flag1);
-  double reprojtag6 = cv::calibrateCamera(tobj6, timp6, cv::Size(3,3), cameraMatrix1, distCoeffs1, R1, T1,flag1);
+  flag1 |= cv::CALIB_FIX_ASPECT_RATIO;
   double reprojerror1 = cv::calibrateCamera(tobjectpoints1, timagepoints1, cv::Size(3,3), cameraMatrix1, distCoeffs1, R1, T1,flag1);
-//  double error0 = cv::calibrateCamera(tobjectpoints1(0:3), timagepoints1(0:3), cv::Size(3,3), cameraMatrix1, distCoeffs1, R1, T1,flag1);
   double reprojerror2 = cv::calibrateCamera(tobjectpoints2, timagepoints2, cv::Size(3,3), cameraMatrix2, distCoeffs2, R2, T2,flag1);
   newcameraMatrix1 = cv::getOptimalNewCameraMatrix(cameraMatrix1,distCoeffs1,cv::Size(3,3),1,cv::Size(3,3),0);
   newcameraMatrix2 = cv::getOptimalNewCameraMatrix(cameraMatrix2,distCoeffs2,cv::Size(3,3),1,cv::Size(3,3),0);
-//  std::cout << "Error for tag 0: " << error0 << std::endl;
   std::cout << "cameraMatrix of sensor 0: " << cameraMatrix1 << std::endl;
   std::cout << "distCoeffs of sensor 0 : " << distCoeffs1 << std::endl;
   std::cout << "cameraMatrix of sensor 1: " << cameraMatrix2 << std::endl;
   std::cout << "distCoeffs of sensor 1 : " << distCoeffs2 << std::endl;
   std::cout << "Reprojection error of sensor 0 : " << reprojerror1 << std::endl;
   std::cout << "Reprojection error of sensor 1 : " << reprojerror2 << std::endl;
+  std::cout << "New Camera Matrix of sensor 0 : " << newcameraMatrix1 << std::endl;
+  std::cout << "Rotation Matrix of sensor 0 : " << R1.rows << " " << endl << T1.rows << T1.cols << std::endl;
 
-  std::cout << "Reprojection error for tag 0 : " << reprojtag0 << std::endl;
-  std::cout << "Reprojection error for tag 1 : " << reprojtag1 << std::endl;
-  std::cout << "Reprojection error for tag 2 : " << reprojtag2 << std::endl;
-  std::cout << "Reprojection error for tag 3 : " << reprojtag3 << std::endl;
-  std::cout << "Reprojection error for tag 4 : " << reprojtag4 << std::endl;
-  std::cout << "Reprojection error for tag 5 : " << reprojtag5 << std::endl;
-  std::cout << "Reprojection error for tag 6 : " << reprojtag6 << std::endl;
+
+
+
+  std::stringstream input_image_test;
+  input_image_test << imagefoldername0;
+  input_image_test << "/img_0000013_1_1.jpg";
+  std::string image_name_test = input_image_test.str();
+  cv::Mat imagetest = cv::imread(image_name_test, cv::IMREAD_GRAYSCALE);
+  AprilTags::TagDetector tagDetector(AprilTags::tagCodes36h11_other);
+  vector<AprilTags::TagDetection> detectionstest = tagDetector.extractTags(imagetest);
+
+  std::vector<cv::Vec2f>  imagepointstest = Grid3.imgpointstest(detectionstest);     
+  std::vector<cv::Vec3f>  objectpointstest = Grid3.objpointstest(detectionstest, Grid3.d11, Grid3.d12, Grid3.d13, Grid3.d14, Grid3.width);
+  cv::Mat objectpointstestmat = cv::Mat(objectpointstest);
+  cv::Mat imgpointstestmat = cv::Mat(imagepointstest);
+
+  //  cv::Mat reprojimgpointstest = cameraMatrix1*objectpointstestmat;
+
+  //  cv::resize(objectpointstestmat,objectpointstestmat, cv::Size(3,7));
+  // cv::Mat_<float> Testmat = objectpointstestmat.row(0).t();
+  // cv::Mat_<float> imgTestmat = imgpointstestmat.row(0).t();
+
+  // float var = Testmat.at<float>(0,1);
+  // cv::Mat objvec = cv::Mat({Testmat.at<float>(0,0), Testmat.at<float>(0,1), Testmat.at<float>(0,2)});
+  // cv::Mat imgvec = cv::Mat({imgTestmat.at<float>(0,0), imgTestmat.at<float>(0,1), Testmat.at<float>(0,2)});
+  // std::vector<cv::Vec3f> v1(Testmat.begin(), Testmat.end());
+  // int rows = objvec.rows;
+  // int cols = objvec.cols;
+  // std::cout << rows << " " << cols << std::endl;
+  // cv::Mat_<float> cammat = cameraMatrix1;
+  // cv::Mat reprojimgpointstest = cammat*objvec ;
+  // cv::Mat error = imgvec - reprojimgpointstest;
+  // std::cout << cv::norm(error, cv::NORM_L2)<< std::endl;
+  // cout << "M = " << endl << " "  << R1 << endl << endl << imgvec << endl << endl << reprojimgpointstest << endl;
+
+
+  cv::Mat rotmat = R1.row(13);
+  cv::Mat tramat = T1.row(13);
   
+  cout << "objectpoints are = " << endl << " " << objectpointstestmat << endl;
+  for (int i = 0; i < 7; ++i) {
+    float cumulerror = 0;
+    for (int j = 4*i; j < 4*i+4; ++j){
+      cv::Mat Testmat = objectpointstestmat.row(j);
+      cv::Mat imgvec;
+      cv::projectPoints(Testmat,rotmat,tramat,cameraMatrix1,distCoeffs1,imgvec);
+      cv::Mat_<float> img = cv::Mat({imgvec.at<float>(0,0), imgvec.at<float>(0,1)});
+      cv::Mat orgimgvec = imgpointstestmat.row(j).t();
+      cv::Mat_<float> orgimg = cv::Mat({orgimgvec.at<float>(0,0), orgimgvec.at<float>(0,1)});
+    
+      cv::Mat error = img - orgimg;
+      float err = cv::norm(orgimg - img, cv::NORM_L2);
+      // cout << "error is " << endl << endl << err << endl;
+      cumulerror = cumulerror + err;
+    }
+    cout << "error for tag " << i << endl << cumulerror/4 << endl;
+  }
+  // cout << "error is " << endl << endl << cumulerror/28 << endl;
+  // cout << "projected img points = " << endl << " " << img << endl << "original image points = " << endl << orgimg << endl << endl << "error is " << endl << endl << cumulerror << endl;
+  // for (int i = 1; i < 8; ++i) {
+  //   float error = 0;
+  //   for (int j = 4*i - 4; i < 4*i; ++j) {
+  //     cv::Mat_<float> Testmat = objectpointstestmat.row(j);
+  //     cv::Mat imgvec;
+  //     cv::projectPoints(Testmat,rotmat,tramat,cameraMatrix1,distCoeffs1,imgvec);
+  //     cv::Mat orgimgvec = imgpointstestmat.row(j);
+  //     error = cv::norm(orgimgvec - imgvec, cv::NORM_L2);
+  //   }
+  //   err.push_back(error);
+  // }
+  // cout << "M = " << endl << " " << err << endl << imgvec << endl << endl << orgimgvec;
+
+  // for (size_t i = 0; i < objectpointstest.size(); ++i) {
+
+  //   cv::Mat_<float> Testmat = objectpointstestmat.row(i).t();
+  //   cv::Mat_<float> imgTestmat = imgpointstestmat.row(i).t();
+
+  //   cv::Mat objvec = cv::Mat({Testmat.at<float>(0,0), Testmat.at<float>(0,1), Testmat.at<float>(0,2)});
+  //   cv::Mat reprojimgpointstest = cammat*objvec ;
+  //   cv::Mat imgvec = cv::Mat({imgTestmat.at<float>(0,0), imgTestmat.at<float>(0,1), Testmat.at<float>(0,2)});
+
+
+
+
+  
+
+
+
   cv::Mat K1,K2,R,F,E,D1,D2;
   K1 = newcameraMatrix1;
   K2 = newcameraMatrix2;

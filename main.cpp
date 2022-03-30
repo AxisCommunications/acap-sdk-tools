@@ -26,15 +26,15 @@ int main(int argc, char* argv[]) {
   // AprilTags::AprilGrid Grid1(grid_rows,grid_columns,grid_size,grid_spacing,grid_startID);
 
   
-  float grid_d1 = .26;
-  float grid_d2 = .47;
-  float grid_d3 = .16;
-  float grid_d4 = .27;
-  float grid_width = .053;
+  float grid_d1 = 0.261;
+  float grid_d2 = 0.471;
+  float grid_d3 = 0.161;
+  float grid_d4 = 0.271;
+  float grid_width = 0.026;
   AprilTags::Test Grid1(grid_d1,grid_d2,grid_d3,grid_d4,grid_width);
   
-  int numberofimages = 53;
-  int imagesforcalibration = 53;
+  int numberofimages = 21;
+  int imagesforcalibration = 21;
   std::string imagefoldername1= "../data/vlogtest";
   int cameranumber1 = 1;
   std::vector<cv::Mat> matr1 = calibrationtest(Grid1,imagefoldername1,cameranumber1, imagesforcalibration, numberofimages);
