@@ -1,12 +1,12 @@
 #include "apriltags/Tag36h11_other.h"
 #include "apriltags/TagDetector.h"
-#include "apriltags/Test.h"
+#include "apriltags/CustomPattern.h"
 #include "opencv2/opencv.hpp"
 #include <stdio.h>
 
-std::vector<cv::Mat> calibrationtest(AprilTags::Test Grid, const std::string image_folder_name, const int cameranumber, const int numberofimagesforcalibration, const int totalnumberofimages) {
+std::vector<cv::Mat> customCalibration(AprilTags::CustomPattern Grid, const std::string image_folder_name, const int cameranumber, const int numberofimagesforcalibration, const int totalnumberofimages) {
   float disT = Grid.width;
-  std::cout << "test dist "<< disT << std::endl;
+  std::cout << "dist "<< disT << std::endl;
   std::vector<std::vector<cv::Vec2f>> timagepoints;
   std::vector<std::vector<cv::Vec3f>> tobjectpoints;
   int noimg = numberofimagesforcalibration;
@@ -22,8 +22,8 @@ std::vector<cv::Mat> calibrationtest(AprilTags::Test Grid, const std::string ima
     // Detect tags and set image and object points
     AprilTags::TagDetector tagDetector(AprilTags::tagCodes36h11_other);
     vector<AprilTags::TagDetection> detections = tagDetector.extractTags(image);
-    std::vector<cv::Vec2f> imagepoints = Grid.imgpointstest(detections);     
-    std::vector<cv::Vec3f> objectpoints = Grid.objpointstest(detections, Grid.d11, Grid.d12, Grid.d13, Grid.d14, Grid.width);
+    std::vector<cv::Vec2f> imagepoints = Grid.imgpoints(detections);     
+    std::vector<cv::Vec3f> objectpoints = Grid.objpoints(detections, Grid.d11, Grid.d12, Grid.d13, Grid.d14, Grid.width);
     size_t threshold = 6; // Only images where 7 tags have been detected will be used for calibration
     std::cout << "detections     " << detections.size() << std::endl;
     if(detections.size() > threshold) {
@@ -56,22 +56,22 @@ std::vector<cv::Mat> calibrationtest(AprilTags::Test Grid, const std::string ima
 
 
   // Calculating error for one sample image
-  std::stringstream input_image_test;
-  input_image_test << image_folder_name << "/img_0000013_1_1.jpg";
-  std::string image_name_test = input_image_test.str();
-  cv::Mat imagetest = cv::imread(image_name_test, cv::IMREAD_GRAYSCALE);
+  std::stringstream input_image;
+  input_image << image_folder_name << "/img_0000013_1_1.jpg";
+  std::string image_name = input_image.str();
+  cv::Mat image = cv::imread(image_name, cv::IMREAD_GRAYSCALE);
   AprilTags::TagDetector tagDetector(AprilTags::tagCodes36h11_other);
-  vector<AprilTags::TagDetection> detectionstest = tagDetector.extractTags(imagetest);
+  vector<AprilTags::TagDetection> detections = tagDetector.extractTags(image);
 
-  std::vector<cv::Vec2f> imagepointstest = Grid.imgpointstest(detectionstest);     
-  std::vector<cv::Vec3f> objectpointstest = Grid.objpointstest(detectionstest, Grid.d11, Grid.d12, Grid.d13, Grid.d14, Grid.width);
-  cv::Mat objectpointstestmat = cv::Mat(objectpointstest);
-  cv::Mat imgpointstestmat = cv::Mat(imagepointstest);
+  std::vector<cv::Vec2f> imagepoints = Grid.imgpoints(detections);     
+  std::vector<cv::Vec3f> objectpoints = Grid.objpoints(detections, Grid.d11, Grid.d12, Grid.d13, Grid.d14, Grid.width);
+  cv::Mat objectpointsmat = cv::Mat(objectpoints);
+  cv::Mat imgpointsmat = cv::Mat(imagepoints);
 
   cv::Mat rotmat = R.row(13);
   cv::Mat tramat = T.row(13);
   cv::Mat error;
-  std::cout << "objectpoints are = " << std::endl << " " << objectpointstestmat << std::endl;
+  std::cout << "objectpoints are = " << std::endl << " " << objectpointsmat << std::endl;
   // For each tag
   for (int i = 0; i < 7; ++i) {
     float cumulerror = 0;
@@ -79,11 +79,11 @@ std::vector<cv::Mat> calibrationtest(AprilTags::Test Grid, const std::string ima
     for (int j = 4*i; j < 4*i+4; ++j){
 
       // Projecting the points into the image plane and calculating the error for each point
-      cv::Mat Testmat = objectpointstestmat.row(j);
+      cv::Mat aMat = objectpointsmat.row(j);
       cv::Mat imgvec;
-      cv::projectPoints(Testmat,rotmat,tramat,cameraMatrix,distCoeffs,imgvec);
+      cv::projectPoints(aMat,rotmat,tramat,cameraMatrix,distCoeffs,imgvec);
       cv::Mat_<float> img = cv::Mat({imgvec.at<float>(0,0), imgvec.at<float>(0,1)});
-      cv::Mat orgimgvec = imgpointstestmat.row(j).t();
+      cv::Mat orgimgvec = imgpointsmat.row(j).t();
       cv::Mat_<float> orgimg = cv::Mat({orgimgvec.at<float>(0,0), orgimgvec.at<float>(0,1)});
     
       cv::Mat error = img - orgimg;

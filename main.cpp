@@ -1,6 +1,6 @@
-#include "calibrationtest.hpp"
+#include "customCalibration.hpp"
 #include "writeconfig.hpp"
-#include "apriltags/Test.h"
+#include "apriltags/CustomPattern.h"
 #include <stdio.h>
 
 int main(int argc, char* argv[]) {
@@ -18,13 +18,13 @@ int main(int argc, char* argv[]) {
   float grid_d3 = 0.161;
   float grid_d4 = 0.271;
   float grid_width = 0.026;
-  AprilTags::Test Grid(grid_d1,grid_d2,grid_d3,grid_d4,grid_width);
+  AprilTags::CustomPattern Grid(grid_d1,grid_d2,grid_d3,grid_d4,grid_width);
   
   int numberofimages = 21;
   int imagesforcalibration = 21;
   std::string imagefoldername1= "../data/vlogtest";
   int cameranumber1 = 1;
-  const std::vector<cv::Mat> matr = calibrationtest(Grid,imagefoldername1,cameranumber1,imagesforcalibration,numberofimages);
+  const std::vector<cv::Mat> matr = customCalibration(Grid,imagefoldername1,cameranumber1,imagesforcalibration,numberofimages);
   
   writeconfig(matr);
   
