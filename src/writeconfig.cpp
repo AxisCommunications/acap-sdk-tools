@@ -1,27 +1,23 @@
 #include "apriltags/Tag36h11.h"
 #include "apriltags/TagDetector.h"
-#include "opencv2/opencv.hpp"
-#include "vis.hpp"
-#include "apriltags/Tag36h11.h"
-#include "apriltags/TagDetector.h"
 #include "apriltags/AprilGrid.h"
-#include "opencv2/opencv.hpp"
-#include "apriltags/TagDetector.h"
-#include "opencv2/opencv.hpp"
 #include "vis.hpp"
+
+#include "opencv2/opencv.hpp"
 #include "libconfig.h++"
 #include <iostream>
 #include <iomanip>
 #include <cstdlib>
+#include <vector>
 using namespace std;
 using namespace libconfig;
 
-int writeconfig(const std::vector<cv::Mat> stereoparameters1){
+int writeconfig(const std::vector<cv::Mat> stereoparameters){
 
-cv::Mat CameraMatrix = stereoparameters1[0];
-cv::Mat distortion = stereoparameters1[1];
-cv::Mat Reprojectionerror = stereoparameters1[2];
-cv::Mat Tagerror = stereoparameters1[3];
+cv::Mat CameraMatrix = stereoparameters[0];
+cv::Mat distortion = stereoparameters[1];
+cv::Mat Reprojectionerror = stereoparameters[2];
+cv::Mat Tagerror = stereoparameters[3];
 static const char *output_file = "../newconfig1.cfg";
   Config cfg;
 
@@ -92,7 +88,5 @@ static const char *output_file = "../newconfig1.cfg";
   }
 
   return(EXIT_SUCCESS);
-
-
 
 }

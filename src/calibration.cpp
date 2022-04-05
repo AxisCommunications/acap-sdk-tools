@@ -16,12 +16,6 @@
 
 std::vector<cv::Mat> calibration(const AprilTags::AprilGrid Grid, const std::string imagefoldername, const int cameranumber, const int numberofimagesforcalibration, const int totalnumberofimages) {
   AprilTags::AprilGrid Grid1 = Grid;
-  
-  float grid_size = Grid1.size;
-  float grid_spacing = Grid1.spacing;
-  int grid_rows  = Grid1.rows;
-  int grid_columns = Grid1.columns;
-  int grid_startID = Grid1.start_ID;
 
   std::vector<std::vector<cv::Vec2f>> timagepoints1;
   std::vector<std::vector<cv::Vec3f>> tobjectpoints1;
@@ -41,11 +35,11 @@ std::vector<cv::Mat> calibration(const AprilTags::AprilGrid Grid, const std::str
   }
 
   int noimg = numberofimagesforcalibration;
-  int totalnoimg = totalnumberofimages;
+  // int totalnoimg = totalnumberofimages;
   int accimg = 0;
   for(int i = 0; accimg < noimg; i++){
       std::stringstream input_image_name1 ;
-      int ii = rand() % totalnoimg;
+      // int ii = rand() % totalnoimg;
       input_image_name1 << imagefoldername0;
       input_image_name1 << "/img";
       input_image_name1 << std::setw(6) << std::setfill('0')<<i;

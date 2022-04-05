@@ -1,7 +1,11 @@
-Installation of **OpenCV** and **Eigen3** is essential before starting the cmake.
+# Camera Calibration
 
-Update: Install non-catkin version of ethzasl_apriltag2 from this repository https://github.com/AxisCommunications/acap-cv-tools to use the AprilGrid Test
-**Build**
+This code is used to calibrate an Axis camera using a printed pattern. To know more about the process, visit our [documentation](https://axiscommunications.github.io/acap-documentation/).
+
+**Installation**
+1. Installation of **OpenCV** and **Eigen3** is essential before starting the cmake.
+2. Install non-catkin version of ethzasl_apriltag2 from this [repository](https://github.com/AxisCommunications/acap-cv-tools) to use the AprilGrid Test. 
+3. Build:
 ```
 mkdir build && cd build
 cmake ..
@@ -11,13 +15,4 @@ make
 **Running sample data**
 ```
 ./main
-```
-**Undistorting and rectifying images**
-```
-./undistort
-```
-**Creating disparity maps**
-```
-cd ..
-python match.py
 ```

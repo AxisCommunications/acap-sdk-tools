@@ -1,20 +1,7 @@
-#include <string>
-#include <vector>
-#include <sstream>
-#include "apriltags/Tag36h11.h"
-#include "apriltags/TagDetector.h"
-#include "apriltags/AprilGrid.h"
-#include "apriltags/Test.h"
-#include "opencv2/opencv.hpp"
-#include "vis.hpp"
-#include <opencv2/core/core.hpp>
-#include <opencv2/calib3d/calib3d.hpp>
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
-#include "calibration.hpp"
 #include "calibrationtest.hpp"
 #include "writeconfig.hpp"
-
+#include "apriltags/Test.h"
+#include <stdio.h>
 
 int main(int argc, char* argv[]) {
 
@@ -31,15 +18,15 @@ int main(int argc, char* argv[]) {
   float grid_d3 = 0.161;
   float grid_d4 = 0.271;
   float grid_width = 0.026;
-  AprilTags::Test Grid1(grid_d1,grid_d2,grid_d3,grid_d4,grid_width);
+  AprilTags::Test Grid(grid_d1,grid_d2,grid_d3,grid_d4,grid_width);
   
   int numberofimages = 21;
   int imagesforcalibration = 21;
   std::string imagefoldername1= "../data/vlogtest";
   int cameranumber1 = 1;
-  std::vector<cv::Mat> matr1 = calibrationtest(Grid1,imagefoldername1,cameranumber1, imagesforcalibration, numberofimages);
+  const std::vector<cv::Mat> matr = calibrationtest(Grid,imagefoldername1,cameranumber1,imagesforcalibration,numberofimages);
   
-  int configfilerwrite = writeconfig(matr1,matr1,matr1);
+  writeconfig(matr);
   
 return 0;
 }
