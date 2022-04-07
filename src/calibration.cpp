@@ -21,20 +21,17 @@ std::vector<cv::Mat> calibration(AprilTags::AprilGrid Grid, const std::string im
 
     // Detect tags and set image and object points
     vector<AprilTags::TagDetection> detections = tagDetector.extractTags(image);
-    std::vector<cv::Vec2f> imagepoints = Grid.imgpoints(detections,Grid.rows,Grid.columns,Grid.start_ID);
-    std::vector<cv::Vec3f> objectpoints = Grid.objpoints(detections,Grid.rows,Grid.columns,Grid.start_ID,Grid.size,Grid.spacing);
+    std::vector<cv::Vec2f> imagepoints = Grid.imgpoints(detections);
+    std::vector<cv::Vec3f> objectpoints = Grid.objpoints(detections);
     int grid_points = Grid.columns*Grid.rows*4;
     int threshold = grid_points/4; // Only when a fourth of the corners have been detected will be used for calibration
-    std::cout << "objectpoints     " << objectpoints.size() << std::endl;
     if(objectpoints.size() > threshold) {
       timagepoints.push_back(imagepoints);
-
       tobjectpoints.push_back(objectpoints);
-
-      std::cout << "image number"<< i << " accepted" << std::endl;
+      std::cout << " - Image number "<< i << " accepted (" << objectpoints.size() << " object points)" << std::endl;
       accimg = accimg + 1;
-    }else {
-      std::cout << "image number" << i << " rejected" << std::endl;
+    } else {
+      std::cout << " - Image number " << i << " rejected (" << image_name << ")" << std::endl;
     }
     // int th = 37;
     // if(i > th){
@@ -43,18 +40,19 @@ std::vector<cv::Mat> calibration(AprilTags::AprilGrid Grid, const std::string im
     // }
   }
 
-  std::cout << "calibration underway" << std::endl;
+  std::cout << std::endl << "Calibration underway" << std::endl << std::endl;
   cv::destroyAllWindows();
   cv::Mat cameraMatrix,distCoeffs,R,T,newcameraMatrix;
   int flag = 0;
   flag |= cv::CALIB_FIX_K3 + cv::CALIB_ZERO_TANGENT_DIST;
   float reprojerroR = cv::calibrateCamera(tobjectpoints, timagepoints, cv::Size(Grid.rows,Grid.columns), cameraMatrix, distCoeffs, R, T,flag);
   cv::Mat reprojerror = cv::Mat({reprojerroR});
-  std::cout << "cameraMatrix of sensor 0: " << cameraMatrix << std::endl;
-  std::cout << "distCoeffs of sensor 0: " << distCoeffs << std::endl;
-  std::cout << "Reprojection error of sensor 0: " << reprojerroR << std::endl;
+  std::cout << "Camera Matrix: " << std::endl << cameraMatrix << std::endl;
+  std::cout << "Distortion Coefficients: " << std::endl << distCoeffs << std::endl;
+  std::cout << "Reprojection error: " << std::endl << reprojerroR << std::endl;
 
   // Calculating error for one sample image
+  std::cout << std::endl << "Validation for one image" << std::endl << std::endl;
   std::stringstream input_image_val;
   input_image_val << imagefoldername << "/img_0000013_1_1.jpg";
   std::string image_name_val = input_image_val.str();
@@ -62,19 +60,18 @@ std::vector<cv::Mat> calibration(AprilTags::AprilGrid Grid, const std::string im
   AprilTags::TagDetector tagDetector_val(AprilTags::tagCodes36h11);
 
   vector<AprilTags::TagDetection> detections_val = tagDetector_val.extractTags(image_val);
-  std::vector<cv::Vec2f> imagepoints_val = Grid.imgpoints(detections_val,Grid.rows,Grid.columns,Grid.start_ID);     
-  std::vector<cv::Vec3f> objectpoints_val = Grid.objpoints(detections_val,Grid.rows,Grid.columns,Grid.start_ID,Grid.size,Grid.spacing);
+  std::vector<cv::Vec2f> imagepoints_val = Grid.imgpoints(detections_val);     
+  std::vector<cv::Vec3f> objectpoints_val = Grid.objpoints(detections_val);
   cv::Mat objectpointsmat_val = cv::Mat(objectpoints_val);
   cv::Mat imgpointsmat_val = cv::Mat(imagepoints_val);
-
 
   cv::Mat rotmat_val = R.row(13);
   cv::Mat tramat_val = T.row(13);
   cv::Mat detectedIDs_val;
   cv::Mat error;
-  std::cout << "amount of objectpoints: " << std::endl << " " << objectpointsmat_val.size() << std::endl;
+  std::cout << "Amount of objectpoints: " << std::endl << " " << objectpointsmat_val.size() << std::endl;
 
-
+  // Projecting the object points into the image plane and calculating the distance to the detected image points
   for (int i = 0; i < Grid.rows*Grid.columns; ++i){
     for (size_t j = 0; j < detections_val.size(); ++j) {
       const auto& det = detections_val[j];
@@ -95,7 +92,7 @@ std::vector<cv::Mat> calibration(AprilTags::AprilGrid Grid, const std::string im
           cumulerror = cumulerror + err;
         }
         cumulerror = cumulerror/4;
-        std::cout << std::endl << "error for tag " << i << ": " << cumulerror << std::endl;
+        std::cout << "error for tag " << i << ": " << cumulerror << std::endl;
         error.push_back(cumulerror);
       } 
     }
@@ -108,7 +105,7 @@ std::vector<cv::Mat> calibration(AprilTags::AprilGrid Grid, const std::string im
   calibrationmatrices.push_back(reprojerror);
   calibrationmatrices.push_back(error);
   calibrationmatrices.push_back(detectedIDs_val);
-  std::cout << "detectedIDS rows " << detectedIDs_val.rows << std::endl;
-return calibrationmatrices;
+  std::cout << "detectedIDS rows: " << detectedIDs_val.rows << std::endl;
+  return calibrationmatrices;
 }
 
