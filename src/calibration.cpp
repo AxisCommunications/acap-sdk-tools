@@ -1,18 +1,8 @@
-#include <string>
-#include <vector>
-#include <sstream>
-#include <stdlib.h>
-#include <stdio.h>
 #include "apriltags/Tag36h11.h"
 #include "apriltags/TagDetector.h"
 #include "apriltags/AprilGrid.h"
-#include "apriltags/CustomPattern.h"
 #include "opencv2/opencv.hpp"
-#include "vis.hpp"
-#include <opencv2/core/core.hpp>
-#include <opencv2/calib3d/calib3d.hpp>
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
+#include <stdio.h>
 
 std::vector<cv::Mat> calibration(AprilTags::AprilGrid Grid, const std::string imagefoldername, const int numberofimagesforcalibration, const int totalnumberofimages) {
   std::vector<std::vector<cv::Vec2f>> timagepoints;
@@ -35,16 +25,16 @@ std::vector<cv::Mat> calibration(AprilTags::AprilGrid Grid, const std::string im
     std::vector<cv::Vec3f> objectpoints = Grid.objpoints(detections,Grid.rows,Grid.columns,Grid.start_ID,Grid.size,Grid.spacing);
     int grid_points = Grid.columns*Grid.rows*4;
     int threshold = grid_points/4; // Only when a fourth of the corners have been detected will be used for calibration
-    cout << "objectpoints     " << objectpoints.size() << endl;
+    std::cout << "objectpoints     " << objectpoints.size() << std::endl;
     if(objectpoints.size() > threshold) {
       timagepoints.push_back(imagepoints);
 
       tobjectpoints.push_back(objectpoints);
 
-      cout << "image number"<< i << " accepted" << endl;
+      std::cout << "image number"<< i << " accepted" << std::endl;
       accimg = accimg + 1;
     }else {
-      cout << "image number" << i << " rejected" << endl;
+      std::cout << "image number" << i << " rejected" << std::endl;
     }
     // int th = 37;
     // if(i > th){
@@ -82,7 +72,7 @@ std::vector<cv::Mat> calibration(AprilTags::AprilGrid Grid, const std::string im
   cv::Mat tramat_val = T.row(13);
   cv::Mat detectedIDs_val;
   cv::Mat error;
-  cout << "objectpoints are = " << endl << " " << objectpointsmat_val.size() << endl;
+  std::cout << "amount of objectpoints: " << std::endl << " " << objectpointsmat_val.size() << std::endl;
 
 
   for (int i = 0; i < Grid.rows*Grid.columns; ++i){
@@ -105,7 +95,7 @@ std::vector<cv::Mat> calibration(AprilTags::AprilGrid Grid, const std::string im
           cumulerror = cumulerror + err;
         }
         cumulerror = cumulerror/4;
-        cout << "error for tag " << i << endl << cumulerror << endl;
+        std::cout << std::endl << "error for tag " << i << ": " << cumulerror << std::endl;
         error.push_back(cumulerror);
       } 
     }
@@ -118,7 +108,7 @@ std::vector<cv::Mat> calibration(AprilTags::AprilGrid Grid, const std::string im
   calibrationmatrices.push_back(reprojerror);
   calibrationmatrices.push_back(error);
   calibrationmatrices.push_back(detectedIDs_val);
-  cout << "detectedIDS rows " << detectedIDs_val.rows << endl;
+  std::cout << "detectedIDS rows " << detectedIDs_val.rows << std::endl;
 return calibrationmatrices;
 }
 
