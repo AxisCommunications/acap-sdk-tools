@@ -23,5 +23,5 @@
 #include <opencv2/imgproc/imgproc.hpp>
 
 
-std::vector<cv::Mat> calibration(AprilTags::AprilGrid Grid, std::string imagefoldername, int cameranumber, int numberofimagesforcalibration, int totalnumberofimages);
+std::vector<cv::Mat> calibration(AprilTags::AprilGrid Grid, std::string imagefoldername, int numberofimagesforcalibration, int totalnumberofimages);
 #endif

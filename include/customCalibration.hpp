@@ -4,5 +4,5 @@
 #include "apriltags/CustomPattern.h"
 #include <stdio.h>
 
-std::vector<cv::Mat> customCalibration(AprilTags::CustomPattern Grid, std::string imagefoldername, int cameranumber, int numberofimagesforcalibration,  int totalnumberofimages);
+std::vector<cv::Mat> customCalibration(AprilTags::CustomPattern Grid, std::string imagefoldername, int numberofimagesforcalibration,  int totalnumberofimages);
 #endif

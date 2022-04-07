@@ -4,9 +4,8 @@
 #include "opencv2/opencv.hpp"
 #include <stdio.h>
 
-std::vector<cv::Mat> customCalibration(AprilTags::CustomPattern Grid, const std::string image_folder_name, const int cameranumber, const int numberofimagesforcalibration, const int totalnumberofimages) {
-  float disT = Grid.width;
-  std::cout << "dist "<< disT << std::endl;
+std::vector<cv::Mat> customCalibration(AprilTags::CustomPattern Grid, const std::string image_folder_name, const int numberofimagesforcalibration, const int totalnumberofimages) {
+  
   std::vector<std::vector<cv::Vec2f>> timagepoints;
   std::vector<std::vector<cv::Vec3f>> tobjectpoints;
   int noimg = numberofimagesforcalibration;
@@ -43,7 +42,7 @@ std::vector<cv::Mat> customCalibration(AprilTags::CustomPattern Grid, const std:
     // }
   }
 
-  std::cout << "calibrating underway for camera " << cameranumber <<  std::endl;
+  std::cout << "calibration underway" << std::endl;
   cv::destroyAllWindows();
   cv::Mat cameraMatrix,distCoeffs,R,T,newcameraMatrix;
   int flag = 0;
@@ -51,8 +50,8 @@ std::vector<cv::Mat> customCalibration(AprilTags::CustomPattern Grid, const std:
   float reprojerroR = cv::calibrateCamera(tobjectpoints, timagepoints, cv::Size(3,3), cameraMatrix, distCoeffs, R, T,flag);
   cv::Mat reprojerror = cv::Mat({reprojerroR});
   std::cout << "cameraMatrix of sensor 0: " << cameraMatrix << std::endl;
-  std::cout << "distCoeffs of sensor 0 : " << distCoeffs << std::endl;
-  std::cout << "Reprojection error of sensor 0 : " << reprojerroR << std::endl;
+  std::cout << "distCoeffs of sensor 0: " << distCoeffs << std::endl;
+  std::cout << "Reprojection error of sensor 0: " << reprojerroR << std::endl;
 
 
   // Calculating error for one sample image
