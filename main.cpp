@@ -1,7 +1,6 @@
 #include "calibration.hpp"
 #include "writeconfig.hpp"
-#include "apriltags/CustomPattern.h"
-#include "apriltags/AprilGrid.h"
+#include "AprilGrid.hpp"
 #include <stdio.h>
 
 int main(int argc, char* argv[]) {
@@ -16,7 +15,7 @@ int main(int argc, char* argv[]) {
   float grid_spacing = 2.3/9.4;
   std::string grid_images_path = "../data/aprilgrid_wide";
 
-  AprilTags::AprilGrid Grid(6,6,grid_size,grid_spacing,0);
+  AprilGrid Grid(6,6,grid_size,grid_spacing,0);
   
   int numberofimages = 39;
   int imagesforcalibration = 39;

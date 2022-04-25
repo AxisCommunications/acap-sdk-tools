@@ -1,10 +1,10 @@
 #include "apriltags/Tag36h11.h"
 #include "apriltags/TagDetector.h"
-#include "apriltags/AprilGrid.h"
+#include "AprilGrid.hpp"
 #include "opencv2/opencv.hpp"
 #include <stdio.h>
 
-std::vector<cv::Mat> calibration(AprilTags::AprilGrid Grid, const std::string imagefoldername, const int numberofimagesforcalibration, const int totalnumberofimages) {
+std::vector<cv::Mat> calibration(AprilGrid Grid, const std::string imagefoldername, const int numberofimagesforcalibration, const int totalnumberofimages) {
   std::vector<std::vector<cv::Vec2f>> timagepoints;
   std::vector<std::vector<cv::Vec3f>> tobjectpoints;
   int noimg = numberofimagesforcalibration;
