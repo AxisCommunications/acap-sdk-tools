@@ -1,0 +1,7 @@
+plugin: aws_ec2
+regions:
+  - eu-north-1
+
+filters:
+  instance-state-name: running
+  tag:user: "USER_HERE"
