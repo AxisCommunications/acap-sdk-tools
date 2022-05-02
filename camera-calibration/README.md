@@ -41,5 +41,3 @@ Some validation tests were performed with an Axis Q1656 with the following April
    columns: 6;
    ```
 
-**Additional functionality**
-Function `displayDetection` in `vis.cpp` displays the AprilTag detections on top of an image.

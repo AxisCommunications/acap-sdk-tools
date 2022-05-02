@@ -41,7 +41,6 @@ std::vector<cv::Mat> calibration(AprilGrid Grid, const std::string imagefolderna
   }
 
   std::cout << std::endl << "Calibration underway" << std::endl << std::endl;
-  cv::destroyAllWindows();
   cv::Mat cameraMatrix,distCoeffs,R,T,newcameraMatrix;
   int flag = 0;
   flag |= cv::CALIB_FIX_K3 + cv::CALIB_ZERO_TANGENT_DIST;
