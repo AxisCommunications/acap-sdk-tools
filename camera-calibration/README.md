@@ -2,6 +2,9 @@
 
 This code is used to calibrate an Axis camera using a printed pattern. To know more about the process, visit our [documentation](https://axiscommunications.github.io/acap-documentation/docs/develop/camera-calibration.html).
 
+![calibration_diagram](data/calibration_diagram.svg)
+
+
 **Usage**
 
 1. [Create](https://github.com/ethz-asl/kalibr/wiki/calibration-targets#a-aprilgrid) and print an AprilTag grid.
