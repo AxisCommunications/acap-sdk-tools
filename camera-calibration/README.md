@@ -1,15 +1,53 @@
-# Camera Calibration
+*Copyright (C) 2022, Axis Communications AB, Lund, Sweden. All Rights Reserved.*
 
-This code is used to calibrate an Axis camera using a printed pattern. To know more about the process, visit our [documentation](https://axiscommunications.github.io/acap-documentation/docs/develop/camera-calibration.html).
+
+# Overview
+
+Images captured by an Axis camera are sometimes visibly distorted in the edges. That is because Axis cameras prioritize capturing a wide area over producing rectilinear images. Distortion can make it difficult to detect objects or to measure distances. To correct this, we can calibrate the image and straighten it.
+
+This README file explains how to obtain calibration parameters of an Axis Camera using a dataset of images captured by the same camera and Apriltag detection library from [ETH-Z](https://github.com/ethz-asl/ethzasl_apriltag2).
+
+We go through a step by step process needed, starting from making a dataset with the Axis camera and finally calibrating it. To know more about the process indepth, visit our [documentation](https://axiscommunications.github.io/acap-documentation/docs/develop/camera-calibration.html).
 
 ![calibration_diagram](data/calibration_diagram.svg)
 
+## Structure of this tool
 
-**Usage**
+Below is the structure and scripts used in the tool:
+
+```bash
+camera-calibration
+├── data
+│   ├── aprilgrid_tele
+│   └── aprilgird_wide
+│   
+├── include
+│    ├── AprilGrid.hpp
+│    ├── calibration.hpp
+│    └── writeconfig.hpp
+├── src
+│    ├── AprilGrid.cpp
+│    ├── calibration.cpp
+│    └── writeconfig.cpp
+├── CMakelists.txt
+├── CMakelists-detection.txt
+├── Dockerfile
+├── main.cpp
+└── README.md
+```
+
+- **data/aprilgrid_tele** - Dataset consisting of AprilGrid images captured in Tele mode using an Axis Camera.
+- **data/aprilgrid_wide** - Dataset consisting of AprilGrid images captured in Wide mode using an Axis Camera.
+- **src/AprilGrid.cpp** - Defines two functions to compute object and image points.
+- **src/calibration.cpp** - This file collects each image from the captured dataset, detects tags and computes calibration parameters.
+- **Dockerfile** - Docker File which builds the image that runs the whole calibration procedure shown below.
+- **main.cpp** - Updating/Replacing the Apriltag grid parameters such as rows, columns, grid_size, grid_spacing and path to the image folder should be done in this file.
+
+**Quicksteps**
 
 1. [Create](https://github.com/ethz-asl/kalibr/wiki/calibration-targets#a-aprilgrid) and print an AprilTag grid.
 2. Take sample pictures with the Axis camera pointing towards the AprilTag grid, including different positions and orientations of the grid.
-3. Write the parameters used to create the pattern and the modify the image folder in [`main.cpp`](main.cpp).
+3. Write the parameters used to create the pattern and the modify the image folder in [`main.cpp`](main.cpp). 
 4. Build the Docker image that will download and compile all the calibration code.
 
     ```docker build -t calibration-image .```
@@ -44,3 +82,5 @@ Some validation tests were performed with an Axis Q1656 with the following April
    columns: 6;
    ```
 
+# License
+[Apache 2.0](../LICENSE)
