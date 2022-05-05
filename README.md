@@ -6,10 +6,10 @@ This repository contains a set of tools which aims to enrich the developers expe
 
 Below is a list of tools available in the repository:
 
-* [camera-calibration](./camera-calibration/)
-  * A C++ tool which helps calibrate your camera.
 * [ansible-training](./ansible-training/)
   * An Ansible tool which automates your training using Ansible and AWS.
+* [camera-calibration](./camera-calibration/)
+  * A C++ tool which helps calibrate your camera.
 
 # How to work with Github repository
 You can help to make this repo a better one using the following commands.
