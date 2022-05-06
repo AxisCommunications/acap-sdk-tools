@@ -1,4 +1,4 @@
-name: Axis-CICD
+name: Axis-CI
 
 on:
   push:
