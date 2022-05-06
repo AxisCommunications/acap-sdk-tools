@@ -1,0 +1,19 @@
+name: Axis-CICD
+
+on:
+  push:
+    paths:
+      - '**'
+      - '!.github/workflows/example-checks.yml'
+      - '!README.md'
+      - '!LICENSE'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Build camera-calibration application
+      run: |
+        cd ./camera-calibration
+        docker build -t axisecp/camera-calibration .
