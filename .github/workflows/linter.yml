@@ -21,7 +21,6 @@ jobs:
           MARKDOWN_CONFIG_FILE: .markdown-lint.yml
           DOCKERFILE_HADOLINT_FILE_NAME: .hado-lint.yml
           YAML_CONFIG_FILE: .yaml-lint.yml
-          
           VALIDATE_BASH: true
           VALIDATE_DOCKERFILE_HADOLINT: true
           VALIDATE_MARKDOWN: true

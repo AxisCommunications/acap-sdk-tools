@@ -7,9 +7,9 @@ All types of contributions are encouraged and valued. See the [Table of contents
 ## Table of contents
 
 - [I want to contribute](#i-want-to-contribute)
-    - [Reporting bugs](#reporting-bugs)
-    - [Suggesting enhancements](#suggesting-enhancements)
-    - [Code contribution](#code-contribution)
+  - [Reporting bugs](#reporting-bugs)
+  - [Suggesting enhancements](#suggesting-enhancements)
+  - [Code contribution](#code-contribution)
 
 ## I want to contribute
 
