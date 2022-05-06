@@ -3,20 +3,13 @@
 
 All types of contributions are encouraged and valued. See the [Table of contents](#table-of-contents) for different ways to help and details about how this project handles them. Please make sure to read the relevant section before making your contribution. It will make it a lot easier for us maintainers and smooth out the experience for all involved. We look forward to your contributions.
 
-> And if you like the project, but just don't have time to contribute, that's fine. There are other easy ways to support the project and show your appreciation, which we would also be very happy about:
->
-> - Star the project
-> - Tweet about it
-> - Refer this project in your project's readme
-> - Mention the project at local meetups and tell your friends/colleagues
-
 <!-- omit in toc -->
 ## Table of contents
 
 - [I want to contribute](#i-want-to-contribute)
     - [Reporting bugs](#reporting-bugs)
     - [Suggesting enhancements](#suggesting-enhancements)
-    - [Your first code contribution](#your-first-code-contribution)
+    - [Code contribution](#code-contribution)
 
 ## I want to contribute
 
@@ -75,7 +68,7 @@ Enhancement suggestions are tracked as [GitHub issues][issues].
 - You may want to **include screenshots and animated GIFs** which help you demonstrate the steps or point out the part which the suggestion is related to.
 - **Explain why this enhancement would be useful** to most users. You may also want to point out the other projects that solved it better and which could serve as inspiration.
 
-### Your first code contribution
+### Code contribution
 
 Start by [forking the repository](https://docs.github.com/en/github/getting-started-with-github/fork-a-repo), i.e. copying the repository to your account to grant you write access. Continue with cloning the forked repository to your local machine.
 
@@ -104,11 +97,52 @@ git push origin <branch name>
 
 Before opening a Pull Request (PR), please consider the following guidelines:
 
-- Please make sure that the code builds perfectly fine on your local system.
-- The PR will have to meet the code standard already available in the repository.
+- Please make sure that the sample code builds perfectly fine on your local system.
+- Make sure that all linters pass.
+- Follow the conventional commits message style in the commit messages
+- The PR will have to meet the sample code examples standard already available in the repository.
 - Explanatory comments related to code functions are required. Please write code comments for a better understanding of the code for other developers.
+- No PR will be accepted without having a well defined README (see examples in the repo) file for the sample code.
 
 And finally when you are satisfied with your changes, open a new PR.
+
+#### Lint of code base
+
+A set of different linters test the code base and these must pass in order to get a pull request approved. When you create a pull request, a set of linters will run syntax and format checks on different file types in GitHub Actions by making use of a tool called [super-linter](https://github.com/github/super-linter). If any of the linters gives an error, this will be shown in the action connected to the pull request.
+
+In order to fasten up development, it's possible to run linters as part of your local development environment. Since super-linter is using a Docker image in GitHub Actions, users of other editors may run it locally to lint the code base. For complete instructions and guidance, see super-linter page for [running locally](https://github.com/github/super-linter/blob/main/docs/run-linter-locally.md).
+
+To run a number of linters on the code base from command line:
+
+```sh
+docker run --rm  \
+  -v $PWD:/tmp/lint \
+  -e RUN_LOCAL=true \
+  -e VALIDATE_MARKDOWN=true \
+  -e FILTER_REGEX_EXCLUDE='docs/develop/schema-field-descriptions-v*' \
+  -e LINTER_RULES_PATH=/ \
+  -e MARKDOWN_CONFIG_FILE=.markdownlint.yml \
+  github/super-linter:slim-v4
+```
+
+##### Run super-linter interactively
+
+It might be more convenient to run super-linter interactively. Run container and enter command line:
+
+```sh
+docker run --rm \
+  -v $PWD:/tmp/lint \
+  -w /tmp/lint \
+  --entrypoint /bin/bash \
+  -it github/super-linter:slim-v4
+```
+
+Then from the container terminal, the following commands can lint the the code base for different file types:
+
+```sh
+# Lint Markdown files
+markdownlint -i docs/develop/schema-field-descriptions-v\* .
+```
 
 <!-- markdownlint-disable MD034 -->
 [issues]: https://github.com/AxisCommunications/acap-sdk-extras/issues
