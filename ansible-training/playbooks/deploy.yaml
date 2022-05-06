@@ -9,7 +9,7 @@
       ipify_facts:
       register: my_ip_facts
 
-    - name: Creating security group and allowing SSH access # Will create a group if it's not already created (with same name)
+    - name: Creating security group and allowing SSH access  # Will create a group if it's not already created (with same name)
       ec2_group:
         name: "{{ security_group }}"
         description: "Security group for training for {{ user }}"
@@ -32,8 +32,8 @@
         security_group: "{{ security_group }}"
         tags:
           user: "{{ user }}"
-        count: 1 # number of instances
-        state: started #running
+        count: 1  # number of instances
+        state: started
         wait: true
       register: ec2
       tags: creating
@@ -101,7 +101,7 @@
         region: "{{ aws_region }}"
         state: "terminated"
         instance_ids: "{{ ec2['instances'][0].instance_id }}"
-        wait: True
+        wait: true
       tags: cleanup
 
     - name: Removing from known_hosts

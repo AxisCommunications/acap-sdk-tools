@@ -12,7 +12,9 @@ Below is a list of tools available in the repository:
   * A C++ tool which helps calibrate your camera.
 
 # How to work with Github repository
+
 Take a look at the [CONTRIBUTING](CONTRIBUTING.md) file.
 
 # License
+
 [Apache 2.0](LICENSE)
