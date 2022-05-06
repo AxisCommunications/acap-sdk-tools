@@ -137,12 +137,25 @@ docker run --rm \
   -it github/super-linter:slim-v4
 ```
 
-Then from the container terminal, the following commands can lint the the code base for different file types:
+Then from the container terminal, the following commands can lint the the code
+base for different file types:
 
 ```sh
+# Lint Dockerfile files
+hadolint $(find -type f -name "Dockerfile*")
+
 # Lint Markdown files
-markdownlint -i docs/develop/schema-field-descriptions-v\* .
+markdownlint .
+
+# Lint YAML files
+yamllint .
+
+# Lint shell script files
+shellcheck $(shfmt -f .)
+shfmt -d .
 ```
+
+To lint only a specific file, replace `.` or `$(COMMAND)` with the file path.
 
 <!-- markdownlint-disable MD034 -->
 [issues]: https://github.com/AxisCommunications/acap-sdk-extras/issues
