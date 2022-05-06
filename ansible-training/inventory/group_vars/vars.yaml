@@ -7,5 +7,5 @@ user: "{{ lookup('env','USER') }}"
 key_pair_name: "{{ lookup('env','USER') }}-key-pair"
 security_group: "{{ lookup('env','USER') }}-sg"
 instance_name: "training-{{ lookup('env','USER') }}"
-instance_type: "g4dn.8xlarge" #"g4dn.xlarge"
-image_id: "ami-0906aa26fea6a7007" # Deep Learning Base AMI (Ubuntu 18.04) Version 44.0
+instance_type: "g4dn.8xlarge"
+image_id: "ami-0906aa26fea6a7007"  # Deep Learning Base AMI (Ubuntu 18.04) Version 44.0
