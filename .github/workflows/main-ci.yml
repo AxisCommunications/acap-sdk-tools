@@ -12,6 +12,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    
+    - name: qemu cross compiler
+      run: |
+         docker run --rm --privileged multiarch/qemu-user-static --credential yes --persistent yes
 
     - name: Build camera-calibration application
       run: |
