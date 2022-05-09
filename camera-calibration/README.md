@@ -12,7 +12,7 @@ We go through a step by step process needed, starting from making a dataset with
 
 ## Requirements
 
-- Docker
+* Docker
 
 ## Structure of this tool
 
@@ -38,12 +38,12 @@ camera-calibration
 └── README.md
 ```
 
-- **data/aprilgrid_tele** - Dataset consisting of AprilGrid images captured in Tele mode using an Axis camera.
-- **data/aprilgrid_wide** - Dataset consisting of AprilGrid images captured in Wide mode using an Axis camera.
-- **src/AprilGrid.cpp** - Defines two functions to compute object and image points.
-- **src/calibration.cpp** - Collects each image from the captured dataset, detects tags and computes calibration parameters.
-- **Dockerfile** - Dockerfile which builds the image that runs the whole calibration procedure explained below.
-- **main.cpp** - Updating/Replacing the AprilTag grid parameters such as rows, columns, grid_size, grid_spacing and path to the image folder should be done in this file.
+* **data/aprilgrid_tele** - Dataset consisting of AprilGrid images captured in Tele mode using an Axis camera.
+* **data/aprilgrid_wide** - Dataset consisting of AprilGrid images captured in Wide mode using an Axis camera.
+* **src/AprilGrid.cpp** - Defines two functions to compute object and image points.
+* **src/calibration.cpp** - Collects each image from the captured dataset, detects tags and computes calibration parameters.
+* **Dockerfile** - Dockerfile which builds the image that runs the whole calibration procedure explained below.
+* **main.cpp** - Updating/Replacing the AprilTag grid parameters such as rows, columns, grid_size, grid_spacing and path to the image folder should be done in this file.
 
 ## Quicksteps
 
@@ -72,7 +72,7 @@ camera-calibration
 
 Some validation tests were performed with an Axis Q1656 with the following AprilGrid parameters:
 
-- Tele capturing (full zoom):
+* Tele capturing (full zoom):
 
    ```cpp
    grid_size = 0.024;
@@ -82,7 +82,7 @@ Some validation tests were performed with an Axis Q1656 with the following April
    columns = 6;
    ```
 
-- Wide capturing (no zoom):
+* Wide capturing (no zoom):
 
    ```cpp
    grid_size = 0.094;
@@ -98,5 +98,5 @@ Some validation tests were performed with an Axis Q1656 with the following April
 
 # References
 
-- [https://github.com/ethz-asl/ethzasl_apriltag2](https://github.com/ethz-asl/ethzasl_apriltag2)
-- [https://docs.opencv.org](https://docs.opencv.org)
+* [https://github.com/ethz-asl/ethzasl_apriltag2](https://github.com/ethz-asl/ethzasl_apriltag2)
+* [https://docs.opencv.org](https://docs.opencv.org)
