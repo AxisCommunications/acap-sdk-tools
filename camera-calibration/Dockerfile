@@ -19,19 +19,19 @@ COPY --from=cv-sdk /axis/openblas /
 COPY --from=cv-sdk /axis/opencv /
 
 # Install cmake
-
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends tzdata && \
+    rm -rf /var/lib/apt/lists/*
 RUN apt-get update && apt-get install -yf --no-install-recommends \
-        tzdata \
         make \
         git \
         cmake \
         g++-10 \
         gcc \
         libeigen3-dev \
-        libconfig++-dev && \
-    apt-get clean && \
+        libconfig++-dev \
+        build-essential && \
     rm -rf /var/lib/apt/lists/*
-RUN apt-get install -y --no-install-recommends build-essential
 ENV CXX=g++-10
 
 # Copy the application script to the container
