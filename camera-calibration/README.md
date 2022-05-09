@@ -52,19 +52,19 @@ camera-calibration
 3. Write the parameters used to create the pattern and the modify the image folder in [`main.cpp`](main.cpp).
 4. Build the Docker image that will download and compile all the calibration code.
 
-    ```bash
+    ```sh
     docker build -t <APP_IMAGE> .
     ```
 
 5. Run the Docker image. The calibration code will automatically run to obtain the estimated calibration parameters, which are saved in `config.cfg`.
 
-    ```bash
+    ```sh
     docker run -it --name <APP_CONTAINER> <APP_IMAGE>
     ```
 
 6. Copy the calibration parameters.
 
-    ```bash
+    ```sh
     docker cp <APP_CONTAINER>:/app/config.cfg .
     ```
 
