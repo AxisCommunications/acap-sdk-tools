@@ -19,13 +19,15 @@ RUN apt-get update && apt-get -y install python3-pip
 RUN pip3 install ansible
 RUN ansible-galaxy collection install community.aws
 RUN pip3 install -r $HOME/.ansible/collections/ansible_collections/amazon/aws/requirements.txt
+CMD ["/bin/bash"]
 ```
 
-1. Pulls the Ubuntu image.
-2. installs PIP, a package manager.
-3. Installs Ansible.
-4. Installs the AWS collection.
-5. Installs the requirements for the AWS collection.
+1. Pulls the Ubuntu image
+2. installs PIP, a package manager
+3. Installs Ansible
+4. Installs the AWS collection
+5. Installs the requirements for the AWS collection
+6. Opens the command line
 
 ## Structure of this tool
 
