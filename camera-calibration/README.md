@@ -2,9 +2,9 @@
 
 # Camera calibration
 
-Images captured by an Axis Camera are sometimes visibly distorted in the edges. That is because Axis Cameras prioritize capturing a wide area over producing rectilinear images. Distortion can make it difficult to detect objects or to measure distances. To correct this, we can calibrate the image and straighten it.
+Images captured by an Axis camera are sometimes visibly distorted in the edges. That is because Axis cameras prioritize capturing a wide area over producing rectilinear images. Distortion can make it difficult to detect objects or to measure distances. To correct this, we can calibrate the image and straighten it.
 
-This README file explains how to obtain calibration parameters of an Axis Camera using a dataset of images captured by the same camera and Apriltag detection library from [ETH-Z](https://github.com/ethz-asl/ethzasl_apriltag2).
+This README file explains how to obtain calibration parameters of an Axis camera using a dataset of images captured by the same camera and Apriltag detection library from [ETH-Z](https://github.com/ethz-asl/ethzasl_apriltag2).
 
 We go through a step by step process needed, starting from making a dataset with the Axis camera and finally calibrating it. To know more about the process indepth, visit our [documentation](https://axiscommunications.github.io/acap-documentation/docs/develop/camera-calibration.html).
 
@@ -38,12 +38,12 @@ camera-calibration
 └── README.md
 ```
 
-- **data/aprilgrid_tele** - Dataset consisting of AprilGrid images captured in Tele mode using an AXIS Camera.
-- **data/aprilgrid_wide** - Dataset consisting of AprilGrid images captured in Wide mode using an AXIS Camera.
-- **src/AprilGrid.cpp** - Defines two functions to compute object and image points.
-- **src/calibration.cpp** - Collects each image from the captured dataset, detects tags and computes calibration parameters.
-- **Dockerfile** - Dockerfile which builds the image that runs the whole calibration procedure explained below.
-- **main.cpp** - Updating/Replacing the AprilTag grid parameters such as rows, columns, grid_size, grid_spacing and path to the image folder should be done in this file.
+* **data/aprilgrid_tele** - Dataset consisting of AprilGrid images captured in Tele mode using an Axis camera.
+* **data/aprilgrid_wide** - Dataset consisting of AprilGrid images captured in Wide mode using an Axis camera.
+* **src/AprilGrid.cpp** - Defines two functions to compute object and image points.
+* **src/calibration.cpp** - Collects each image from the captured dataset, detects tags and computes calibration parameters.
+* **Dockerfile** - Dockerfile which builds the image that runs the whole calibration procedure explained below.
+* **main.cpp** - Updating/Replacing the AprilTag grid parameters such as `rows`, `columns`, `grid_size`, `grid_spacing` and path to the image folder should be done in this file.
 
 ## Quicksteps
 
@@ -52,21 +52,28 @@ camera-calibration
 3. Write the parameters used to create the pattern and the modify the image folder in [`main.cpp`](main.cpp).
 4. Build the Docker image that will download and compile all the calibration code.
 
-    ```docker build -t <APP_IMAGE> .```
+    ```bash
+    docker build -t <APP_IMAGE> .
+    ```
+    where `<APP_IMAGE>` is the desired name of the Docker Image, e.g. *calibration*
 
 5. Run the Docker image. The calibration code will automatically run to obtain the estimated calibration parameters, which are saved in `config.cfg`.
 
-    ```docker run -it --name <APP_CONTAINER> <APP_IMAGE>```
+    ```bash
+    docker run -it --name <APP_CONTAINER> <APP_IMAGE>
+    ```
 
 6. Copy the calibration parameters.
 
-    ```docker cp <APP_CONTAINER>:/app/config.cfg .```
+    ```bash
+    docker cp <APP_CONTAINER>:/app/config.cfg .
+    ```
 
 ### Validation results
 
 Some validation tests were performed with an Axis Q1656 with the following AprilGrid parameters:
 
-- Tele capturing (full zoom):
+* Tele capturing (full zoom):
 
    ```cpp
    grid_size = 0.024;
@@ -76,7 +83,7 @@ Some validation tests were performed with an Axis Q1656 with the following April
    columns = 6;
    ```
 
-- Wide capturing (no zoom):
+* Wide capturing (no zoom):
 
    ```cpp
    grid_size = 0.094;
