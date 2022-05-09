@@ -30,10 +30,10 @@ RUN apt-get update && apt-get install -yf --no-install-recommends \
         g++-10 \
         gcc \
         libeigen3-dev \
-        libconfig++-dev && \
+        libconfig++-dev \
+        build-essential && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
-RUN apt-get install -y --no-install-recommends build-essential
 ENV CXX=g++-10
 
 # Copy the application script to the container
