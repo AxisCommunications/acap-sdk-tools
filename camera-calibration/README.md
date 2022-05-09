@@ -38,8 +38,8 @@ camera-calibration
 └── README.md
 ```
 
-- **data/aprilgrid_tele** - Dataset consisting of AprilGrid images captured in Tele mode using an AXIS Camera.
-- **data/aprilgrid_wide** - Dataset consisting of AprilGrid images captured in Wide mode using an AXIS Camera.
+- **data/aprilgrid_tele** - Dataset consisting of AprilGrid images captured in Tele mode using an Axis camera.
+- **data/aprilgrid_wide** - Dataset consisting of AprilGrid images captured in Wide mode using an Axis camera.
 - **src/AprilGrid.cpp** - Defines two functions to compute object and image points.
 - **src/calibration.cpp** - Collects each image from the captured dataset, detects tags and computes calibration parameters.
 - **Dockerfile** - Dockerfile which builds the image that runs the whole calibration procedure explained below.
