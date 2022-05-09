@@ -12,7 +12,7 @@ We go through a step by step process needed, starting from making a dataset with
 
 ## Requirements
 
-- Docker
+- [Docker](https://docs.docker.com/get-docker/) version 20.10.14 or higher
 
 ## Structure of this tool
 
@@ -55,6 +55,7 @@ camera-calibration
     ```sh
     docker build -t <APP_IMAGE> .
     ```
+
     where `<APP_IMAGE>` is the desired name of the Docker Image, e.g. *calibration*
 
 5. Run the Docker image. The calibration code will automatically run to obtain the estimated calibration parameters, which are saved in `config.cfg`.
@@ -65,7 +66,7 @@ camera-calibration
 
 6. Copy the calibration parameters.
 
-    ```bash
+    ```sh
     docker cp <APP_CONTAINER>:/app/config.cfg .
     ```
 
