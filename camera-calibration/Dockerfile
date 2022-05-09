@@ -20,7 +20,7 @@ COPY --from=cv-sdk /axis/opencv /
 
 # Install cmake
 RUN apt-get update && \
-    apt-get install -y tzdata && \
+    apt-get install -y --no-install-recommends tzdata && \
     rm -rf /var/lib/apt/lists/*
 RUN apt-get update && apt-get install -yf --no-install-recommends \
         make \
@@ -31,7 +31,6 @@ RUN apt-get update && apt-get install -yf --no-install-recommends \
         libeigen3-dev \
         libconfig++-dev \
         build-essential && \
-    apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 ENV CXX=g++-10
 
