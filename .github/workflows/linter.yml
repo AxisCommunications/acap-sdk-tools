@@ -18,7 +18,7 @@ jobs:
           DEFAULT_BRANCH: main
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           LINTER_RULES_PATH: /
-          MARKDOWN_CONFIG_FILE: .markdown-lint.yml
+          MARKDOWN_CONFIG_FILE: .markdownlint.yml
           DOCKERFILE_HADOLINT_FILE_NAME: .hado-lint.yml
           YAML_CONFIG_FILE: .yaml-lint.yml
           VALIDATE_BASH: true
