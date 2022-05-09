@@ -2,24 +2,13 @@
 
 # Training on an AWS EC2 Instance using Ansible
 
-Ansible is an automation framework that, in this case, connects to Amazon Web Services (AWS). In this tool, we are automating the training process for the [tensorflow-to-larod-artpec8](https://github.com/AxisCommunications/acap-native-sdk-examples/tree/master/tensorflow-to-larod-artpec8) example.
+In different applications, a trained model is needed to infer a result. We provide examples like [object detection](https://github.com/AxisCommunications/acap-native-sdk-examples/tree/master/object-detection) or [pose estimation](https://github.com/AxisCommunications/acap-computer-vision-sdk-examples/tree/master/pose-estimator-with-flask). In an example in particular, [tensorflow-to-larod-artpec8](https://github.com/AxisCommunications/acap-native-sdk-examples/tree/master/tensorflow-to-larod-artpec8), we show how to train a model for object detection and using it in the camera, as the process of training needs a specific environment, not only in software but also hardware. To avoid building this setup in your own computer, we provide this tool to train your model in Amazon Web Services (AWS). Additionally, we use Ansible, an automation framework that, in this case, automates the deployment of an EC2 instance and all the training.
 
 ## Requirements
 
 - Ansible 5 with AWS collection installed ([community.aws](https://docs.ansible.com/ansible/latest/collections/community/aws/index.html))
 - AWS account
 
-### Recommendation
-
-Instead of installing Ansible directly on the computer, you can create a virtual environment:
-
-```sh
-sudo apt install python3-virtualenv
-virtualenv ansible-venv
-source ansible-venv/bin/activate
-pip3 install ansible
-ansible-galaxy collection install community.aws
-pip3 install -r $HOME/.ansible/collections/ansible_collections/amazon/aws/requirements.txt
 ```
 
 ## Structure of this tool
@@ -40,6 +29,18 @@ ansible-training
 - **inventory/inventory_aws_ec2.yaml** - Defines the dynamic inventory used by the playbook.
 - **playbooks/deploy.yaml** - The main playbook that deploys the instance and trains.
 - **ansible.cfg** - A configuration file for Ansible.
+
+### Building the environment
+
+Instead of installing Ansible directly on the computer, you can create a virtual environment or run a small Ubuntu Docker container. The Dockerfile only needs a few lines:
+
+```sh
+FROM arm64v8/ubuntu:latest
+RUN apt-get update && apt-get -y install python3-pip
+RUN pip3 install ansible
+RUN ansible-galaxy collection install community.aws
+RUN pip3 install -r $HOME/.ansible/collections/ansible_collections/amazon/aws/requirements.txt
+```
 
 ## Quicksteps
 
@@ -101,6 +102,12 @@ The EC2 instance is created in what Amazon calls a Virtual Private Cloud (VPC). 
 2. Create Internet Gate to define access from/to the EC2 instance (main Ansible module: [ec2_vpc_igw](https://docs.ansible.com/ansible/latest/collections/community/aws/ec2_vpc_igw_module.html))
 3. Create subnet to allocate IP for instance (main Ansible module: [ec2_vpc_subnet](https://docs.ansible.com/ansible/latest/collections/amazon/aws/ec2_vpc_subnet_module.html))
 4. Give public access to the subnet (main Ansible module: [ec2_vpc_route_table](https://docs.ansible.com/ansible/latest/collections/amazon/aws/ec2_vpc_route_table_module.html))
+
+1. Pulls the Ubuntu image.
+2. installs PIP, a package manager.
+3. Installs Ansible.
+4. Installs the AWS collection.
+5. Installs the requirements for the AWS collection.
 
 ## License
 
