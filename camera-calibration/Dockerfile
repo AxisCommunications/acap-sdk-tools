@@ -20,8 +20,7 @@ COPY --from=cv-sdk /axis/opencv /
 
 # Install cmake
 RUN apt-get update && \
-    apt-get install tzdata
-
+    apt-get install -y tzdata
 RUN apt-get update && apt-get install -yf --no-install-recommends \
         make \
         git \
