@@ -9,7 +9,23 @@ In different applications, a trained model is needed to infer a result. We provi
 - Ansible 5 with AWS collection installed ([community.aws](https://docs.ansible.com/ansible/latest/collections/community/aws/index.html))
 - AWS account
 
+### Building the environment
+
+Instead of installing Ansible directly on the computer, you can create a virtual environment or run a small Ubuntu Docker container. The Dockerfile only needs a few lines:
+
+```sh
+FROM arm64v8/ubuntu:latest
+RUN apt-get update && apt-get -y install python3-pip
+RUN pip3 install ansible
+RUN ansible-galaxy collection install community.aws
+RUN pip3 install -r $HOME/.ansible/collections/ansible_collections/amazon/aws/requirements.txt
 ```
+
+1. Pulls the Ubuntu image.
+2. installs PIP, a package manager.
+3. Installs Ansible.
+4. Installs the AWS collection.
+5. Installs the requirements for the AWS collection.
 
 ## Structure of this tool
 
@@ -29,18 +45,6 @@ ansible-training
 - **inventory/inventory_aws_ec2.yaml** - Defines the dynamic inventory used by the playbook.
 - **playbooks/deploy.yaml** - The main playbook that deploys the instance and trains.
 - **ansible.cfg** - A configuration file for Ansible.
-
-### Building the environment
-
-Instead of installing Ansible directly on the computer, you can create a virtual environment or run a small Ubuntu Docker container. The Dockerfile only needs a few lines:
-
-```sh
-FROM arm64v8/ubuntu:latest
-RUN apt-get update && apt-get -y install python3-pip
-RUN pip3 install ansible
-RUN ansible-galaxy collection install community.aws
-RUN pip3 install -r $HOME/.ansible/collections/ansible_collections/amazon/aws/requirements.txt
-```
 
 ## Quicksteps
 
@@ -102,12 +106,6 @@ The EC2 instance is created in what Amazon calls a Virtual Private Cloud (VPC). 
 2. Create Internet Gate to define access from/to the EC2 instance (main Ansible module: [ec2_vpc_igw](https://docs.ansible.com/ansible/latest/collections/community/aws/ec2_vpc_igw_module.html))
 3. Create subnet to allocate IP for instance (main Ansible module: [ec2_vpc_subnet](https://docs.ansible.com/ansible/latest/collections/amazon/aws/ec2_vpc_subnet_module.html))
 4. Give public access to the subnet (main Ansible module: [ec2_vpc_route_table](https://docs.ansible.com/ansible/latest/collections/amazon/aws/ec2_vpc_route_table_module.html))
-
-1. Pulls the Ubuntu image.
-2. installs PIP, a package manager.
-3. Installs Ansible.
-4. Installs the AWS collection.
-5. Installs the requirements for the AWS collection.
 
 ## License
 
