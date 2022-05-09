@@ -2,9 +2,9 @@
 
 # Camera calibration
 
-Images captured by an Axis Camera are sometimes visibly distorted in the edges. That is because Axis Cameras prioritize capturing a wide area over producing rectilinear images. Distortion can make it difficult to detect objects or to measure distances. To correct this, we can calibrate the image and straighten it.
+Images captured by an Axis camera are sometimes visibly distorted in the edges. That is because Axis cameras prioritize capturing a wide area over producing rectilinear images. Distortion can make it difficult to detect objects or to measure distances. To correct this, we can calibrate the image and straighten it.
 
-This README file explains how to obtain calibration parameters of an Axis Camera using a dataset of images captured by the same camera and Apriltag detection library from [ETH-Z](https://github.com/ethz-asl/ethzasl_apriltag2).
+This README file explains how to obtain calibration parameters of an Axis camera using a dataset of images captured by the same camera and Apriltag detection library from [ETH-Z](https://github.com/ethz-asl/ethzasl_apriltag2).
 
 We go through a step by step process needed, starting from making a dataset with the Axis camera and finally calibrating it. To know more about the process indepth, visit our [documentation](https://axiscommunications.github.io/acap-documentation/docs/develop/camera-calibration.html).
 
