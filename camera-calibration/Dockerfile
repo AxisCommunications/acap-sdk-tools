@@ -6,7 +6,7 @@ ARG TZ=Europe/Paris \
 ARG TARGET_TOOLCHAIN=aarch64-linux-gnu
 
 # Specify which ACAP Computer Vision SDK to use
-FROM axisecp/acap-computer-vision-sdk:latest-aarch64-devel AS cv-sdk
+FROM axisecp/acap-computer-vision-sdk:latest-aarch64 AS cv-sdk
 
 # Define the runtime image
 FROM arm64v8/ubuntu:20.04
@@ -18,10 +18,12 @@ COPY --from=cv-sdk /axis/python-numpy /
 COPY --from=cv-sdk /axis/openblas /
 COPY --from=cv-sdk /axis/opencv /
 
+
 # Install cmake
+RUN apt-get update && \
+    apt-get install tzdata
 
 RUN apt-get update && apt-get install -yf --no-install-recommends \
-        tzdata \
         make \
         git \
         cmake \
