@@ -119,9 +119,14 @@ docker run --rm  \
   -v $PWD:/tmp/lint \
   -e RUN_LOCAL=true \
   -e VALIDATE_MARKDOWN=true \
-  -e FILTER_REGEX_EXCLUDE='docs/develop/schema-field-descriptions-v*' \
+  -e VALIDATE_YAML=true \
+  -e VALIDATE_DOCKERFILE_HADOLINT=true \
+  -e VALIDATE_BASH=true \
+  -e VALIDATE_SHELL_SHFMT=true \
   -e LINTER_RULES_PATH=/ \
   -e MARKDOWN_CONFIG_FILE=.markdownlint.yml \
+  -e DOCKERFILE_HADOLINT_FILE_NAME=.hado-lint.yml \
+  -e YAML_CONFIG_FILE=.yaml-lint.yml \
   github/super-linter:slim-v4
 ```
 

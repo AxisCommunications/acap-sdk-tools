@@ -24,7 +24,7 @@ pip3 install -r $HOME/.ansible/collections/ansible_collections/amazon/aws/requir
 
 ## Structure of this tool
 
-```bash
+```sh
 ansible-training
 ├── inventory
 │   ├── group_vars
@@ -47,13 +47,13 @@ If this is the first time you are using AWS or Ansible:
 
 1. Create an IAM group with Administrator Access policies.
 2. Create an IAM user associated with the IAM group and download the credentials. It is important that you choose "Access key" for the user type, that way we will have access through the CLI.
-3. Once created, you will have the credentials. Export them in your terminal with the names ```AWS_ACCESS_KEY``` and ```AWS_SECRET_KEY```.
-4. Create a key-pair in AWS, download its .pem file and copy it to your working directory. The configuration provided is based on you naming this key-pair following ```$USER-key-pair```. Each EC2 instance needs to be attached to a key-pair and, with only that, you will be able to access it.
-5. Give permission to Ansible to use this key by: ```chmod 400 $USER-key-pair.pem```.
+3. Once created, you will have the credentials. Export them in your terminal with the names `AWS_ACCESS_KEY` and `AWS_SECRET_KEY`.
+4. Create a key-pair in AWS, download its .pem file and copy it to your working directory. The configuration provided is based on you naming this key-pair following `$USER-key-pair`. Each EC2 instance needs to be attached to a key-pair and, with only that, you will be able to access it.
+5. Give permission to Ansible to use this key by: `chmod 400 $USER-key-pair.pem`.
 
 After that, you will be able to run the playbook:
 
-1. Configure the variables that are in "inventory/group_vars/vars.yaml". The one that you need to change is ```EXAMPLE_DIRECTORY```; the others are not mandatory.
+1. Configure the variables that are in "inventory/group_vars/vars.yaml". The one that you need to change is `EXAMPLE_DIRECTORY`; the others are not mandatory.
 
 2. Configure your user in the dynamic inventory. This is important, because we only want to run the training in the instance we are going to create ourselves.
 
@@ -102,11 +102,11 @@ The EC2 instance is created in what Amazon calls a Virtual Private Cloud (VPC). 
 3. Create subnet to allocate IP for instance (main Ansible module: [ec2_vpc_subnet](https://docs.ansible.com/ansible/latest/collections/amazon/aws/ec2_vpc_subnet_module.html))
 4. Give public access to the subnet (main Ansible module: [ec2_vpc_route_table](https://docs.ansible.com/ansible/latest/collections/amazon/aws/ec2_vpc_route_table_module.html))
 
-# License
+## License
 
 [Apache 2.0](../LICENSE)
 
-# References
+## References
 
 - [https://docs.ansible.com/ansible](https://docs.ansible.com/ansible)
 - [https://docs.aws.amazon.com](https://docs.aws.amazon.com)

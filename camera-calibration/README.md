@@ -18,7 +18,7 @@ We go through a step by step process needed, starting from making a dataset with
 
 Below is the structure and scripts used in the tool:
 
-```bash
+```sh
 camera-calibration
 ├── data
 │   ├── aprilgrid_tele
@@ -86,11 +86,11 @@ Some validation tests were performed with an Axis Q1656 with the following April
    columns = 6;
    ```
 
-# License
+## License
 
 [Apache 2.0](../LICENSE)
 
-# References
+## References
 
 - [https://github.com/ethz-asl/ethzasl_apriltag2](https://github.com/ethz-asl/ethzasl_apriltag2)
 - [https://docs.opencv.org](https://docs.opencv.org)
