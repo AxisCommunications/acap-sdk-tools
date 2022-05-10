@@ -53,16 +53,18 @@ camera-calibration
 4. Build the Docker image that will download and compile all the calibration code.
 
     ```sh
-    docker build -t <APP_IMAGE> .
+    docker build . -t <APP_IMAGE>
     ```
 
-    where `<APP_IMAGE>` is the desired name of the Docker Image, e.g. *calibration*
+    where `<APP_IMAGE>` is the desired name of the Docker image, e.g. *calibration*
 
 5. Run the Docker image. The calibration code will automatically run to obtain the estimated calibration parameters, which are saved in `config.cfg`.
 
     ```sh
     docker run -it --name <APP_CONTAINER> <APP_IMAGE>
     ```
+    
+    where `<APP_CONTAINER>` is the desired name of the Docker container, e.g. *calibration-container*
 
 6. Copy the calibration parameters.
 
