@@ -63,7 +63,7 @@ camera-calibration
     ```sh
     docker run -it --name <APP_CONTAINER> <APP_IMAGE>
     ```
-    
+
     where `<APP_CONTAINER>` is the desired name of the Docker container, e.g. *calibration-container*
 
 6. Copy the calibration parameters.

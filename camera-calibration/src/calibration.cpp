@@ -49,11 +49,6 @@ std::vector<cv::Mat> calibration(AprilGrid Grid, const std::string imagefolderna
     } else {
       std::cout << " - Image number " << i << " rejected (" << image_name << ")" << std::endl;
     }
-    // int th = 37;
-    // if(i > th){
-    //   cout << "not enough good images" << endl;
-    //   break;
-    // }
   }
 
   std::cout << std::endl << "Calibration underway" << std::endl << std::endl;
@@ -103,7 +98,6 @@ std::vector<cv::Mat> calibration(AprilGrid Grid, const std::string imagefolderna
           
           cv::Mat error = img - orgimg;
           float err = cv::norm(orgimg - img, cv::NORM_L2);
-          // cout << "error is " << endl << endl << err << endl;
           cumulerror = cumulerror + err;
         }
         cumulerror = cumulerror/4;
