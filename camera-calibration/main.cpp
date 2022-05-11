@@ -6,8 +6,8 @@
 int main(int argc, char* argv[]) {
 
   // AprilGrid parameters
-  float grid_size = 0.094;
-  float grid_spacing = 2.3/9.4;
+  float grid_size = 0.024;
+  float grid_spacing = 0.696/2.4;
   std::string grid_images_path = "../data/aprilgrid_wide";
   int rows = 6;
   int columns = 6;

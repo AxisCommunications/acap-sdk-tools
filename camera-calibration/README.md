@@ -89,12 +89,18 @@ Some validation tests were performed with an Axis Q1656 with the following April
 - Wide capturing (no zoom):
 
    ```cpp
-   grid_size = 0.094;
-   grid_spacing = 2.3/9.4;
+   grid_size = 0.024;
+   grid_spacing = 0.696/2.4;
    grid_images_path = "../data/aprilgrid_wide";
    rows = 6;
    columns = 6;
    ```
+
+In the following table, the overall Root Mean Square (RMS) re-projection error in pixels is reported. The images were captured with the default optics configuration and using autofocus before the first picture, so that the camera is focused on the grid. The images that were used to get these results are in the [data](data) folder.
+
+| Camera | Wide capturing (No zoom) | Tele (Full zoom) |
+| :- | :- | :- |
+| Q1656 | 0.9 | 1.1 |
 
 ## License
 
