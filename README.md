@@ -1,3 +1,5 @@
+*Copyright (C) 2022, Axis Communications AB, Lund, Sweden. All Rights Reserved.*
+
 # ACAP SDK Extras
 
 This repository contains a set of tools which aims to enrich the developers experience. All examples have a README file in its directory which shows overview, example directory structure and step-by-step instructions on how to use the application.
