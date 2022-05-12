@@ -13,7 +13,7 @@ Below is a list of tools available in the repository:
 - [camera-calibration](./camera-calibration/)
   - A C++ tool which helps calibrate your camera.
 
-## How to work with Github repository
+## How to work with GitHub repository
 
 Take a look at the [CONTRIBUTING.md](CONTRIBUTING.md) file.
 
