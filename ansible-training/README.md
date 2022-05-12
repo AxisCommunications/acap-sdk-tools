@@ -82,11 +82,11 @@ There are different steps that are necessary to complete the whole pipeline. The
 2. Creating security group and allowing SSH access:
 A security group defines how to access an EC2 Instance. In this case, only SSH from your IP is allowed to access it.
 3. Creating the EC2 instance:
-The instance is created. Different configurations can be made, like the type of image or instance. To be able to create it, the key-pair is used. Also, it is attached to the security group created in the last step.
+The instance is created. Different configurations can be made, like the type of image or instance. To be able to create it, the key-pair is used. Also, it is attached to the security group created in the previous step.
 4. Adding instance to inventory:
-Once you have the IP address (and DNS name) to connect to the instance, you can add it to the invetory. This will allow you to register this IP and use it in the next steps.
+Once you have the IP address (and DNS name) to connect to the instance, you can add it to the inventory. This will allow you to register this IP and use it in the next steps.
 5. Writing the new EC2 instance host key to known_hosts:
-Sometimes, there are problems with connecting the host. For Ansible to be truly automatised, the instance can be added to known_hosts so that there are no connection problems.
+Sometimes, there are problems with connecting the host. For Ansible to be truly automatized, the instance can be added to known_hosts so that there are no connection problems.
 6. Train prep:
 Copy the necessary data to the instance.
 7. Building environment in instance:
