@@ -23,7 +23,7 @@ CMD ["/bin/bash"]
 ```
 
 1. Pulls the Ubuntu image
-2. installs PIP, a package manager
+2. Installs PIP, a Python package manager
 3. Installs Ansible
 4. Installs the AWS collection
 5. Installs the requirements for the AWS collection
