@@ -13,7 +13,7 @@ In different applications, a trained model is needed to infer a result. We provi
 
 Instead of installing Ansible directly on the computer, you can create a virtual environment or run a small Ubuntu Docker container. The Dockerfile only needs a few lines:
 
-```sh
+```dockerfile
 FROM arm64v8/ubuntu:latest
 RUN apt-get update && apt-get -y install python3-pip
 RUN pip3 install ansible
