@@ -1,6 +1,6 @@
 ---
 
-EXAMPLE_DIRECTORY: "/Users/marb/Documents/examples/acap-native-sdk-examples/tensorflow-to-larod-artpec8"
+EXAMPLE_DIRECTORY: "{{ lookup('env','HOME') }}/acap-native-sdk-examples/tensorflow-to-larod-artpec8"
 
 aws_region: "eu-north-1"
 user: "{{ lookup('env','USER') }}"
