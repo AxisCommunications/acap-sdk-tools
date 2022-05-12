@@ -52,7 +52,7 @@ ansible-training
 
 If this is the first time you are using AWS or Ansible:
 
-1. Create an IAM user group with *AdministratorAccess* policies.
+1. Create an IAM user group with *AmazonEC2FullAccess* policies.
 2. Create an IAM user associated with the IAM user group and download the credentials. It is important that you choose *Access key - Programmatic access* for the credentials type, that way we will have access through the CLI.
 3. Once created, you will have the credentials. Export them in your terminal with the names `AWS_ACCESS_KEY` and `AWS_SECRET_KEY`.
 4. Create a key-pair in AWS, download its .pem file and copy it to your working directory. The configuration provided is based on you naming this key-pair following `$USER-key-pair`. Each EC2 instance needs to be attached to a key-pair and, with only that, you will be able to access it.
