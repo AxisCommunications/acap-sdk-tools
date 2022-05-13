@@ -55,9 +55,9 @@ If this is the first time you are using AWS or Ansible:
 1. Create an IAM user group with *AmazonEC2FullAccess* policies. You can do that in the AWS Console by searching for the *IAM* service, clicking *User groups* in the left pane and then *Create group*.
 2. Create an IAM user associated with the IAM user group and download the credentials. You can do that in the AWS Console by searching for the *IAM* service, clicking *Users* in the left pane and then *Add users*. The Ansible playbook expects this user to be named as your computer user `$USER`. It is important that you choose *Access key - Programmatic access* for the credentials type. That way you'll have access through the CLI.
 3. At the end of the IAM user creation process, you will be able to copy and download the credentials. Export them in your terminal with the names `AWS_ACCESS_KEY` and `AWS_SECRET_KEY` respectively.
-4. Each EC2 instance must be attached to a key-pair, which is your only way of accessing it. To create one, search for *EC2* service in your AWS Console, select *Key Pairs* in the left pane and then *Create key pair*. The Ansible playbook requires using syntax `$USER-key-pair` when naming this key-pair. Select `.pem` pas the file format. 
-6. At the end of the key pair creation process, the file will download automatically. You have to copy it to your working directory.
-5. Give Ansible permission to use this key by: `chmod 400 $USER-key-pair.pem`.
+4. Each EC2 instance must be attached to a key pair, which is your only way of accessing it. To create one, search for *EC2* service in your AWS Console, select *Key Pairs* in the left pane and then *Create key pair*. The Ansible playbook requires using syntax `$USER-key-pair` when naming this key pair. Select `.pem` pas the file format.
+5. At the end of the key pair creation process, the file will download automatically. You have to copy it to your working directory.
+6. Give Ansible permission to use this key by: `chmod 400 $USER-key-pair.pem`.
 
 After that, you will be able to run the playbook:
 
@@ -82,7 +82,7 @@ A security group defines how to access an EC2 Instance. In this case, only SSH f
 3. **Create the EC2 instance**
 The instance is created. Different configurations can be made, like the type of image or instance. To be able to create it, the key pair is used. Also, it's attached to the security group created in the previous step. A tag is also added with your user. This is important because we only want to run the training in the instance we're going to create ourselves.
 4. **Add the instance to the inventory**
-Once you have the IP address (and DNS name) to connect to the instance, you can add it to the invetory. This allows you to register this IP and use it in the next steps. In "inventory/inventory_aws_ec2.yaml" you can see which instances we are retrieving dynamically: they have to be running, in the specified region and created by you.
+Once you have the IP address (and DNS name) to connect to the instance, you can add it to the inventory. This allows you to register this IP and use it in the next steps. In "inventory/inventory_aws_ec2.yaml" you can see which instances we are retrieving dynamically: they have to be running, in the specified region and created by you.
 5. **Write the new EC2 instance host key to "known_hosts"**
 Sometimes, there are problems with connecting the host. For Ansible to be truly automatized, the instance can be added to "known_hosts" so that there are no connection problems.
 6. **Train preparation**
