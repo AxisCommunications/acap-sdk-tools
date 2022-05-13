@@ -2,11 +2,11 @@
 
 # ACAP SDK Extras
 
-This repository contains a set of tools which aims to enrich the developers experience. All examples have a README file in its directory which shows overview, example directory structure and step-by-step instructions on how to use the application.
+This repository contains a set of tools which aim to enrich your experience as a developer. All examples have a README file in its directory that shows an overview, example directory structure, and step-by-step instructions on how to use the application.
 
 ## Tools
 
-Below is a list of tools available in the repository:
+The tools available in the repository are:
 
 - [ansible-training](./ansible-training/)
   - An Ansible tool which automates your training using Ansible and AWS.
