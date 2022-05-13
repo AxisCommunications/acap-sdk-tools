@@ -2,7 +2,7 @@
 
 # Camera calibration
 
-Images captured by an Axis camera are sometimes visibly distorted on the edges. That is because Axis cameras prioritize capturing a wide area over producing rectilinear images. Distortion can make it difficult to detect objects or to measure distances. To correct this, we can calibrate the image and straighten it.
+Images captured by an Axis camera are sometimes visibly distorted in the edges. That is because Axis cameras prioritize capturing a wide area over producing rectilinear images. Distortion can make it difficult to detect objects or to measure distances. To correct this, we can calibrate the image and straighten it.
 
 This README file explains how to get calibration parameters from an Axis camera using a dataset of images captured by the same camera and Apriltag detection library from [ETH-Z](https://github.com/ethz-asl/ethzasl_apriltag2).
 
@@ -96,7 +96,7 @@ Some validation tests were performed with an Axis Q1656 with the following April
    columns = 6;
    ```
 
-In the table below, the overall Root Mean Square (RMS) re-projection error in pixels is shown. The images were captured with the default optics configuration and using autofocus before the first picture so that the camera is focused on the grid. The images that were used to get these results are in the [data](data) folder.
+In the table below, the overall Root Mean Square (RMS) re-projection error in pixels is reported. The images were captured with the default optics configuration and using autofocus before the first picture, so that the camera is focused on the grid. The images that were used to get these results are in the [data](data) folder.
 
 | Camera | Wide capturing (No zoom) | Tele (Full zoom) |
 | :- | :- | :- |

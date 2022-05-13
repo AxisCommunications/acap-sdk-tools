@@ -4,4 +4,4 @@ regions:
 
 filters:
   instance-state-name: running
-  tag:user: "USER_HERE"
+  tag:user: "{{ lookup('env','USER') }}"

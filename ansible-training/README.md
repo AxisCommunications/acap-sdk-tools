@@ -53,20 +53,16 @@ ansible-training
 If this is the first time you are using AWS or Ansible:
 
 1. Create an IAM user group with *AmazonEC2FullAccess* policies. You can do that in the AWS Console by searching for the *IAM* service, clicking *User groups* in the left pane and then *Create group*.
-2. Create an IAM user associated with the IAM user group and download the credentials. You can do that in the AWS Console by searching for the *IAM* service, clicking *Users* in the left pane and then *Add users*. It is important that you choose *Access key - Programmatic access* for the credentials type, that way we will have access through the CLI.
-3. Once created, you will have the credentials. Export them in your terminal with the names `AWS_ACCESS_KEY` and `AWS_SECRET_KEY`.
-4. Each EC2 instance needs to be attached to a key pair and, with only that, you will be able to access it. To create one, search for *EC2* service in your AWS Console, select *Key Pairs* in the left pane and then *Create key pair*. Download its .pem file and copy it to your working directory. The configuration provided is based on you naming this key pair following `$USER-key-pair`.
+2. Create an IAM user associated with the IAM user group and download the credentials. You can do that in the AWS Console by searching for the *IAM* service, clicking *Users* in the left pane and then *Add users*. The Ansible playbook expects this user to be named as your computer user `$USER`. It is important that you choose *Access key - Programmatic access* for the credentials type. That way you'll have access through the CLI.
+3. At the end of the IAM user creation process, you will be able to copy and download the credentials. Export them in your terminal with the names `AWS_ACCESS_KEY` and `AWS_SECRET_KEY` respectively.
+4. Each EC2 instance must be attached to a key-pair, which is your only way of accessing it. To create one, search for *EC2* service in your AWS Console, select *Key Pairs* in the left pane and then *Create key pair*. The Ansible playbook requires using syntax `$USER-key-pair` when naming this key-pair. Select `.pem` pas the file format. 
+6. At the end of the key pair creation process, the file will download automatically. You have to copy it to your working directory.
 5. Give Ansible permission to use this key by: `chmod 400 $USER-key-pair.pem`.
 
 After that, you will be able to run the playbook:
 
-1. Configure the variables that are in "inventory/group_vars/vars.yaml". The one that you need to change is `EXAMPLE_DIRECTORY`, which has to point to the path of the training example. The other variables can also be changed, but it is not necessary.
-
-2. Configure your user in the dynamic inventory. This is important, because we only want to run the training in the instance we are going to create ourselves.
-
-1. Configure the variables that are located in "inventory/group_vars/vars.yaml". The one you need to change is `EXAMPLE_DIRECTORY`. The rest are optional.
-2. Configure your user in the dynamic inventory. This is important, because we only want to run the training in the instance we're going to create ourselves.
-3. Run the playbook:
+1. Configure the variables that are located in "inventory/group_vars/vars.yaml", which has to point to the path of the training example. The one you need to change is `EXAMPLE_DIRECTORY`. The rest are optional.
+2. Run the playbook:
 
 ```sh
 ansible-playbook playbooks/deploy.yaml --private-key $USER-key-pair.pem
@@ -80,26 +76,26 @@ In the diagram below, you can see an explanation of all the security steps neede
 
 There are different steps that are necessary to complete the whole pipeline. The main file in this repository is the Ansible playbook, where all these steps are defined. Each step is called a task.
 
-1. Getting your public IP.
-2. Creating security group and allowing SSH access:
+1. **Get your public IP**
+2. **Create security group and allow SSH access**
 A security group defines how to access an EC2 Instance. In this case, only SSH from your IP is allowed to access it.
-3. Creating the EC2 instance:
-The instance is created. Different configurations can be made, like the type of image or instance. To be able to create it, the key pair is used. Also, it is attached to the security group created in the previous step.
-4. Adding instance to inventory:
-Once you have the IP address (and DNS name) to connect to the instance, you can add it to the inventory. This will allow you to register this IP and use it in the next steps.
-5. Writing the new EC2 instance host key to known_hosts:
-Sometimes, there are problems with connecting the host. For Ansible to be truly automatized, the instance can be added to known_hosts so that there are no connection problems.
-6. Train prep:
-Copy the necessary data to the instance.
-7. Building environment in instance:
+3. **Create the EC2 instance**
+The instance is created. Different configurations can be made, like the type of image or instance. To be able to create it, the key pair is used. Also, it's attached to the security group created in the previous step. A tag is also added with your user. This is important because we only want to run the training in the instance we're going to create ourselves.
+4. **Add the instance to the inventory**
+Once you have the IP address (and DNS name) to connect to the instance, you can add it to the invetory. This allows you to register this IP and use it in the next steps. In "inventory/inventory_aws_ec2.yaml" you can see which instances we are retrieving dynamically: they have to be running, in the specified region and created by you.
+5. **Write the new EC2 instance host key to "known_hosts"**
+Sometimes, there are problems with connecting the host. For Ansible to be truly automatized, the instance can be added to "known_hosts" so that there are no connection problems.
+6. **Train preparation**
+Copy the necessary data to the instance to prepare for training.
+7. **Build the environment in the instance**
 Build an environment with the characteristics you want. Most importantly for this example, the specific Tensorflow version.
-8. Training:
-The training and model conversion is done.
-9. Collecting model:
-Copy the model from the EC2 instance to your local machine.
-10. Terminating EC2 instance:
+8. **Train**
+The training and model conversion are done.
+9. **Collect model**
+Copy the model from the EC2 instance to your local machine to collect the model.
+10. **Terminate EC2 instance**
 Once you have the model, you can terminate the instance and prevent forgetting about it.
-11. Removing from known_hosts:
+11. **Remove from "known_hosts"**:
 To finish, what was done in step 5 is reversed.
 
 Each task has a tag associated to it, which can be useful if you want to only run some tasks. For example, if the training has failed, preventing the execution of the following tasks like terminating the instance, you could run the playbook specifying the tag `cleanup`:
