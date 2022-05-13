@@ -110,3 +110,4 @@
         path: "~/.ssh/known_hosts"
         state: absent
       when: ec2.instances|length == 1
+      tags: cleanup
