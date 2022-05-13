@@ -2,7 +2,7 @@
 
 EXAMPLE_DIRECTORY: "{{ lookup('env','HOME') }}/acap-native-sdk-examples/tensorflow-to-larod-artpec8"
 
-aws_region: "eu-north-1"
+aws_region: "us-east-1"
 user: "{{ lookup('env','USER') }}"
 key_pair_name: "{{ lookup('env','USER') }}-key-pair"
 security_group: "{{ lookup('env','USER') }}-sg"
