@@ -53,7 +53,7 @@ camera-calibration
 4. Build the Docker image that will download and compile all the calibration code.
 
     ```sh
-    docker build . -t <APP_IMAGE>
+    docker build -t <APP_IMAGE> .
     ```
 
     where `<APP_IMAGE>` is the desired name of the Docker image, for example *calibration*

@@ -52,8 +52,8 @@ ansible-training
 
 If this is the first time you are using AWS or Ansible:
 
-1. Create an IAM user group with *AdministratorAccess* policies.
-2. Create an IAM user associated with the IAM user group and download the credentials. It's important that you choose "Access key" for the user type. That way you'll have access through the CLI.
+1. Create an IAM user group with *AmazonEC2FullAccess* policies.
+2. Create an IAM user associated with the IAM user group and download the credentials. It's important that you choose *Access key - Programmatic access* for the credentials type. That way you'll have access through the CLI.
 3. Once created, you'll have the credentials. Export them in your terminal with the names `AWS_ACCESS_KEY` and `AWS_SECRET_KEY`.
 4. Create a key-pair in AWS, download its .pem file, and copy it to your working directory. The configuration provided requires using syntax `$USER-key-pair` when naming this key-pair. Each EC2 instance must be attached to a key-pair, which is your only way of accessing it.
 5. Give permission to Ansible to use this key by: `chmod 400 $USER-key-pair.pem`.
@@ -88,7 +88,7 @@ All the steps below are defined in the Ansible playbook which is the main file i
 10. Terminate AWS instance[^6].
 11. Remove from known_hosts (reverse step 5)
 [^1]: A security group defines how to access an EC2 Instance. In this case, only SSH from your IP is allowed to access it.
-[^2]: The instance is created. Different configurations can be made, like the type of image or instance. To be able to create it, the key-pair is used. Also, it's attached to the security group created in the last step.
+[^2]: The instance is created. Different configurations can be made, like the type of image or instance. To be able to create it, the key-pair is used. Also, it's attached to the security group created in the previous step.
 [^3]: Once you have the IP address (and DNS name) to connect to the instance, you can add it to the invetory. This allows you to register this IP and use it in the next steps.
 [^4]: Sometimes, there are problems connecting the host. For Ansible to be truly automated, you can add the instance to known_hosts so that there are no connection problems.
 [^5]: Build an environment with the characteristics you want. Most importantly for this example, the specific Tensorflow version.
