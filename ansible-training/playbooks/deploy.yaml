@@ -95,19 +95,29 @@
         scp -r -i "../{{ key_pair_name }}.pem" ubuntu@{{ ec2['instances'][0].public_dns_name }}:/home/ubuntu/tensorflow-to-larod-artpec8/converted_model.tflite .
       tags: training
 
-    - name: Terminating AWS instance
+    - name: Gathering information about EC2 instance
+      ec2_instance_info:
+        region: "{{ aws_region }}"
+        filters:
+          instance-state-name: "running"
+          "tag:user": "{{ user }}"
+      register: ec2_instances
+      tags: cleanup
+
+    - name: Terminating EC2 instance
       ec2_instance:
         key_name: "{{ key_pair_name }}"
         region: "{{ aws_region }}"
         state: "terminated"
-        instance_ids: "{{ ec2['instances'][0].instance_id }}"
+        instance_ids: "{{ item.instance_id }}"
         wait: true
+      loop: "{{ ec2_instances.instances }}"
       tags: cleanup
 
     - name: Removing from known_hosts
       known_hosts:
-        name: "{{ ec2['instances'][0].public_dns_name }}"
+        name: "{{ item }}"
         path: "~/.ssh/known_hosts"
         state: absent
-      when: ec2.instances|length == 1
+      loop: "{{ groups[aws_ec2] }}"
       tags: cleanup
