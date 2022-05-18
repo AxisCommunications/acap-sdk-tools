@@ -116,8 +116,8 @@
 
     - name: Removing from known_hosts
       known_hosts:
-        name: "{{ item }}"
+        name: "{{ item.public_dns_name }}"
         path: "~/.ssh/known_hosts"
         state: absent
-      loop: "{{ groups[aws_ec2] }}"
+      loop: "{{ ec2_instances.instances }}"
       tags: cleanup

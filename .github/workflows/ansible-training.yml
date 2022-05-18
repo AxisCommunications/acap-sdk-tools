@@ -1,0 +1,28 @@
+name: Build ansible-training tool
+
+on:
+  push:
+    paths:
+      - '**'
+      - '!.github/workflows/example-checks.yml'
+      - '!README.md'
+      - '!LICENSE'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      EXREPO: acap-sdk-extras
+      EXNAME: ansible-training
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build ansible-training application
+        env:
+          example: ${{ env.EXNAME }}
+          imagetag: ${{ env.EXREPO }}_${{ env.EXNAME }}:1.0
+        run: |
+          docker image rm -f $imagetag
+          cd $EXNAME
+          docker build --no-cache --tag $imagetag.
+          cd ..
+          docker image rm -f $imagetag

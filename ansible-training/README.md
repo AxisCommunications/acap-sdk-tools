@@ -9,26 +9,6 @@ Some applications need a trained model to infer a result. We provide examples li
 - Ansible 5 with AWS collection installed ([community.aws](https://docs.ansible.com/ansible/latest/collections/community/aws/index.html))
 - AWS account
 
-### Building the environment
-
-Instead of installing Ansible directly on the computer, you can create a virtual environment or run a small Ubuntu Docker container. The Dockerfile only needs a few lines:
-
-```dockerfile
-FROM arm64v8/ubuntu:latest
-RUN apt-get update && apt-get -y install python3-pip
-RUN pip3 install ansible
-RUN ansible-galaxy collection install community.aws
-RUN pip3 install -r $HOME/.ansible/collections/ansible_collections/amazon/aws/requirements.txt
-CMD ["/bin/bash"]
-```
-
-1. Pulls the Ubuntu image
-2. Installs PIP, a Python package manager
-3. Installs Ansible
-4. Installs the AWS collection
-5. Installs the requirements for the AWS collection
-6. Opens the command line
-
 ## Structure of this tool
 
 ```sh
@@ -40,17 +20,21 @@ ansible-training
 ├── playbooks
 │   └── deploy.yaml
 ├── ansible.cfg
-└── README.md
+├── README.md
+└── Dockerfile
 ```
 
 - **inventory/group_vars/vars.yaml** - Defines the variables used by the playbook.
 - **inventory/inventory_aws_ec2.yaml** - Defines the dynamic inventory used by the playbook.
 - **playbooks/deploy.yaml** - The main playbook that deploys the instance and trains.
 - **ansible.cfg** - A configuration file for Ansible.
+- **Dockerfile** - The file necessary to build a Docker container to run Ansible.
 
 ## Quicksteps
 
-If this is the first time you are using AWS or Ansible:
+### Initial configuration
+
+The steps defined below are to obtain the correct configuration to connect to AWS and allow the Ansible playbook to access it. It might be that, if this is not your first time using AWS or Ansible, some of these steps will not be necessary.
 
 1. Create an IAM user group with *AmazonEC2FullAccess* policies. You can do that in the AWS Console by searching for the *IAM* service, clicking *User groups* in the left pane and then *Create group*.
 2. Create an IAM user associated with the IAM user group and download the credentials. You can do that in the AWS Console by searching for the *IAM* service, clicking *Users* in the left pane and then *Add users*. The Ansible playbook expects this user to be named as your computer user `$USER`. It is important that you choose *Access key - Programmatic access* for the credentials type. That way you'll have access through the CLI.
@@ -58,19 +42,37 @@ If this is the first time you are using AWS or Ansible:
 4. Each EC2 instance must be attached to a key pair, which is your only way of accessing it. To create one, search for *EC2* service in your AWS Console, select *Key Pairs* in the left pane and then *Create key pair*. The Ansible playbook requires using syntax `$USER-key-pair` when naming this key pair. Select `.pem` pas the file format.
 5. At the end of the key pair creation process, the file will download automatically. You have to copy it to your working directory.
 6. Give Ansible permission to use this key by: `chmod 400 $USER-key-pair.pem`.
-
-After that, you will be able to run the playbook:
-
-1. Configure the variables that are located in "inventory/group_vars/vars.yaml", which has to point to the path of the training example. The one you need to change is `EXAMPLE_DIRECTORY`. The rest are optional.
-2. Run the playbook:
-
-```sh
-ansible-playbook playbooks/deploy.yaml --private-key $USER-key-pair.pem
-```
+7. Configure the variables that are located in "inventory/group_vars/vars.yaml", which has to point to the path of the training example. The one you need to change is `EXAMPLE_DIRECTORY`. The rest are optional.
 
 In the diagram below, you can see an explanation of all the security steps needed to connect to an EC2 instance.
 
 ![Security diagram](data/security_diagram.svg)
+
+### Building environment
+
+After the steps above, you will be able to run the playbook. Instead of installing Ansible directly on the computer, you can create a virtual environment or run a small Ubuntu Docker container, like the one we provide ([Dockerfile](Dockerfile)). In summary, what it does is take the necessary environment variables, install Ansible and other needed libraries, and set some SSH configuration. The process is the following:
+
+1. Build the Docker image:
+
+	```sh
+	docker build \
+	   --build-arg AWS_ACCESS_KEY="${AWS_ACCESS_KEY:-}" \
+	   --build-arg AWS_SECRET_KEY="${AWS_SECRET_KEY:-}" \ 
+	   --build-arg USER="${USER:-}" \
+	   -t <APP_IMAGE> .
+	```
+
+	where `<APP_IMAGE>` is the desired name of the Docker image, for example *ansible-training*
+
+	It's important to know that the training example will have to be copied into the working directory. Otherwise, Docker won't be able to find it.
+
+2. Run the Docker image. This will run the playbook automatically:
+
+	```sh
+    docker run -it --name <APP_CONTAINER> <APP_IMAGE>
+    ```
+
+    where `<APP_CONTAINER>` is the desired name of the Docker container, for example *ansible-container*
 
 ## Playbook explanation
 
@@ -110,9 +112,9 @@ This is possible thanks to step 10.
 
 ### Variable configuration
 
-We previously mentioned that in "inventory/group_vars/vars.yaml", some variables are defined. Initially, you only need to change the `EXAMPLE_DIRECTORY` to point to your `tensorflow-to-larod-artpec8` training example. However, there are more variables you can change:
+We previously mentioned that in "inventory/group_vars/vars.yaml", some variables are defined:
 
-- Training example: you will have to change `EXAMPLE_DIRECTORY` in "inventory/group_vars/vars.yaml", but also some tasks of the Ansible playbook (mainly from 6th to 9th).
+- Training example: you will have to change `EXAMPLE_DIRECTORY` in "inventory/group_vars/vars.yaml", but also some tasks of the Ansible playbook that call the training scripts.
 - Region: you will have to change `aws_region` in "inventory/group_vars/vars.yaml" and `regions` in "inventory/inventory_aws_ec2.yaml".
 - Instance type (hardware capabilities of instance): you will have to change `instance_type` in "inventory/group_vars/vars.yaml". To find more instance types, refer to [Amazon EC2 Instance Types](https://aws.amazon.com/ec2/instance-types/?trk=4b76a70e-625f-48c4-b90e-cc5a1eadff15&sc_channel=ps&sc_campaign=acquisition&sc_medium=ACQ-P%7CPS-GO%7CBrand%7CDesktop%7CSU%7CCompute%7CEC2%7CND%7CEN%7CText%7CEU&s_kwcid=AL!4422!3!536323179528!e!!g!!amazon%20ec2%20instance%20types&ef_id=Cj0KCQjwg_iTBhDrARIsAD3Ib5j_-NBHj82QOZoGDnI2pI9-waNVacN1pBBBAkRV9SZ-96om0N-7E6AaAm4IEALw_wcB:G:s&s_kwcid=AL!4422!3!536323179528!e!!g!!amazon%20ec2%20instance%20types). Note that not all instance types are available in all regions.
 - Image ID (base software in instance): you will have to change `image_id` in "inventory/group_vars/vars.yaml". To find more images, also called AMI, refer to [Find a Linux AMI](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/finding-an-ami.html).
