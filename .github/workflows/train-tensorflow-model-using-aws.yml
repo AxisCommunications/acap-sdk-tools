@@ -1,4 +1,4 @@
-name: Build camera-calibration tool
+name: Build train-tensorflow-model-using-aws tool
 
 on:
   push:
@@ -12,8 +12,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      EXREPO: acap-sdk-extras
-      EXNAME: camera-calibration
+      EXREPO: acap-sdk-tools
+      EXNAME: train-tensorflow-model-using-aws
     steps:
       - uses: actions/checkout@v2
 
@@ -21,7 +21,7 @@ jobs:
         run: |
             docker run --rm --privileged multiarch/qemu-user-static --credential yes --persistent yes
 
-      - name: Build camera-calibration application
+      - name: Build train-tensorflow-model-using-aws application
         env:
           example: ${{ env.EXNAME }}
           imagetag: ${{ env.EXREPO }}_${{ env.EXNAME }}:1.0
