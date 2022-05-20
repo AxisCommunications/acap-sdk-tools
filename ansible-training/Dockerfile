@@ -9,12 +9,12 @@ ENV USER=$USER
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends python3-pip ssh && \
-    rm -rf /var/lib/apt/lists/* && \
+    rm -rf "/var/lib/apt/lists/*" && \
 	pip3 install --no-cache-dir ansible==5.0.1 && \
 	ansible-galaxy collection install community.aws && \
-	pip3 install --no-cache-dir -r $HOME/.ansible/collections/ansible_collections/amazon/aws/requirements.txt
+	pip3 install --no-cache-dir -r "$HOME/.ansible/collections/ansible_collections/amazon/aws/requirements.txt"
 
-RUN mkdir $HOME/.ssh && touch $HOME/.ssh/known_hosts
+RUN mkdir "$HOME/.ssh" && touch "$HOME/.ssh/known_hosts"
 WORKDIR /app
 COPY . .
 

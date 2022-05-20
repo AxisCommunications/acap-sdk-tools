@@ -58,7 +58,6 @@
 - name: Training pipeline
   hosts: aws_ec2
   user: ubuntu
-  become: yes
   vars_files:
     - "../inventory/group_vars/vars.yaml"
   gather_facts: false
