@@ -16,13 +16,17 @@ jobs:
       EXNAME: camera-calibration
     steps:
       - uses: actions/checkout@v2
+
+      - name: qemu cross compiler
+        run: |
+            docker run --rm --privileged multiarch/qemu-user-static --credential yes --persistent yes
+
       - name: Build camera-calibration application
         env:
           example: ${{ env.EXNAME }}
           imagetag: ${{ env.EXREPO }}_${{ env.EXNAME }}:1.0
         run: |
-          docker image rm -f $imagetag
           cd $EXNAME
-          docker build --no-cache --tag $imagetag.
+          docker build --no-cache --tag $imagetag .
           cd ..
           docker image rm -f $imagetag
