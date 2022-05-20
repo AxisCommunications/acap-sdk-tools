@@ -43,6 +43,7 @@ The steps defined below are to obtain the correct configuration to connect to AW
 5. At the end of the key pair creation process, the file will download automatically. You have to copy it to your working directory.
 6. Give Ansible permission to use this key by: `chmod 400 $USER-key-pair.pem`.
 7. Configure the variables that are located in "inventory/group_vars/vars.yaml", which has to point to the path of the training example. The one you need to change is `EXAMPLE_DIRECTORY`. The rest are optional.
+8. Configure your user in "inventory/inventory_aws_ec2.yaml", the dynamic inventory. This is important, because we only want to run the training in the instance we creating ourselves.
 
 In the diagram below, you can see an explanation of all the security steps needed to connect to an EC2 instance.
 
@@ -54,25 +55,31 @@ After the steps above, you will be able to run the playbook. Instead of installi
 
 1. Build the Docker image:
 
-	```sh
-	docker build \
-	   --build-arg AWS_ACCESS_KEY="${AWS_ACCESS_KEY:-}" \
-	   --build-arg AWS_SECRET_KEY="${AWS_SECRET_KEY:-}" \ 
-	   --build-arg USER="${USER:-}" \
-	   -t <APP_IMAGE> .
-	```
+    ```sh
+    docker build \
+       --build-arg AWS_ACCESS_KEY="${AWS_ACCESS_KEY:-}" \
+       --build-arg AWS_SECRET_KEY="${AWS_SECRET_KEY:-}" \ 
+       --build-arg USER="${USER:-}" \
+       -t <APP_IMAGE> .
+    ```
 
-	where `<APP_IMAGE>` is the desired name of the Docker image, for example *ansible-training*
+    where `<APP_IMAGE>` is the desired name of the Docker image, for example *ansible-training*
 
-	It's important to know that the training example will have to be copied into the working directory. Otherwise, Docker won't be able to find it.
+    It's important to know that the training example will have to be copied into the working directory. Otherwise, Docker won't be able to find it.
 
 2. Run the Docker image. This will run the playbook automatically:
 
-	```sh
+    ```sh
     docker run -it --name <APP_CONTAINER> <APP_IMAGE>
     ```
 
     where `<APP_CONTAINER>` is the desired name of the Docker container, for example *ansible-container*
+
+3. Finally, to copy the model out of the container:
+
+    ```sh
+    docker cp <APP_CONTAINER>:/app/converted_model.tflite .
+    ```
 
 ## Playbook explanation
 
@@ -85,9 +92,9 @@ A security group defines how to access an EC2 Instance. In this case, only SSH f
 The instance is created. Different configurations can be made, like the type of image or instance. To be able to create it, the key pair is used. Also, it's attached to the security group created in the previous step. A tag is also added with your user. This is important because we only want to run the training in the instance we're going to create ourselves.
 4. **Add the instance to the inventory:**
 Once you have the IP address (and DNS name) to connect to the instance, you can add it to the inventory. This allows you to register this IP and use it in the next steps. In "inventory/inventory_aws_ec2.yaml" you can see which instances we are retrieving dynamically: they have to be running, in the specified region and created by you.
-5. **Write the new EC2 instance host key to "known_hosts":**
+5. **Write the new EC2 instance key to "known_hosts":**
 Sometimes, there are problems with connecting the host. For Ansible to be truly automatized, the instance can be added to "known_hosts" so that there are no connection problems.
-6. **Train preparation:**
+6. **Copy data into instance:**
 Copy the necessary data to the instance to prepare for training.
 7. **Build the environment in the instance:**
 Build an environment with the characteristics you want. Most importantly for this example, the specific Tensorflow version.
@@ -95,7 +102,7 @@ Build an environment with the characteristics you want. Most importantly for thi
 The training and model conversion are done.
 9. **Collect model:**
 Copy the model from the EC2 instance to your local machine to collect the model.
-10. **Gathering information about EC2 instance:**
+10. **Gather information about EC2 instance:**
 Get the instance ID of the instance.
 11. **Terminate EC2 instance:**
 Once you have the model, you can terminate the instance and prevent forgetting about it.

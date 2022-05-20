@@ -66,6 +66,8 @@ camera-calibration
 
     where `<APP_CONTAINER>` is the desired name of the Docker container, for example *calibration-container*
 
+    Depending on where you run the container, you might get a warning regarding the image's platform not matching the host platform. This is because in we are using [acap-computer-vision-sdk](https://github.com/AxisCommunications/acap-computer-vision-sdk), which contains libraries that have been compiled in different platforms.
+
 6. Copy the calibration parameters.
 
     ```sh

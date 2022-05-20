@@ -5,11 +5,11 @@
   gather_facts: false
 
   tasks:
-    - name: Getting my public IP
+    - name: Get your public IP
       ipify_facts:
       register: my_ip_facts
 
-    - name: Creating security group and allowing SSH access  # Will create a group if it's not already created (with same name)
+    - name: Create security group and allow SSH access  # Will create a group if it's not already created (with same name)
       ec2_group:
         name: "{{ security_group }}"
         description: "Security group for training for {{ user }}"
@@ -22,7 +22,7 @@
             rule_desc: "Allow access on port 22 from my computer"
       tags: creating
 
-    - name: Creating the EC2 instance
+    - name: Create the EC2 instance
       ec2_instance:
         name: "{{ instance_name }}"
         key_name: "{{ key_pair_name }}"
@@ -40,49 +40,57 @@
 
     - debug:
         msg: "Public IP: {{ ec2['instances'][0].public_ip_address }}, Public DNS name: {{ ec2['instances'][0].public_dns_name }}"
-      when: ec2.instances|length == 1
       tags: info
 
-    - name: Adding instance to inventory
+    - name: Add the instance to the inventory
       add_host:
         name: "{{ ec2['instances'][0].public_dns_name }}"
         ansible_user: ubuntu
         host_key_checking: false
         groups: "aws_ec2"
       no_log: false
-      when: ec2.instances|length == 1
       tags: creating
 
-    - name: Writing the new EC2 instance host key to known hosts
+    - name: Write the new EC2 instance key to "known_hosts"
       shell: "ssh-keyscan {{ ec2['instances'][0].public_dns_name }} >> ~/.ssh/known_hosts"
-      when: ec2.instances|length == 1
       tags: creating
-
-    - name: Train prep
-      shell:
-        scp -r -i "../{{ key_pair_name }}.pem" "{{ EXAMPLE_DIRECTORY }}" ubuntu@{{ ec2['instances'][0].public_dns_name }}:/home/ubuntu
-      tags: training
 
 - name: Training pipeline
   hosts: aws_ec2
   user: ubuntu
+  become: yes
   vars_files:
     - "../inventory/group_vars/vars.yaml"
   gather_facts: false
 
   tasks:
 
-    - name: Building environment in instance
-      shell: cd tensorflow-to-larod-artpec8 && ./build_env.sh
+    - name: Copy data into instance
+      copy:
+        src: "/app/{{ EXAMPLE_DIRECTORY }}"
+        dest: /home/ubuntu
+        directory_mode:
       tags: training
 
-    - name: Training
+    - name: Build the environment in the instance
+      shell: |
+        cd tensorflow-to-larod-artpec8 && chmod +x build_env.sh && ./build_env.sh
+      tags: training
+
+    - name: Train in the environment
       shell: |
         cd tensorflow-to-larod-artpec8
         docker run --gpus all -dit --name training tensorflow-to-larod-a8
-        docker exec training python3 training/train.py -i data/images/val2017/ -a data/annotations/instances_val2017.json && python3 convert_model.py -i models/trained_model.pb -o app/converted_model.tflite
+        docker exec training python3 training/train.py -i data/images/val2017/ -a data/annotations/instances_val2017.json
+        docker exec training python3 convert_model.py -i models/trained_model.pb -o app/converted_model.tflite
         docker cp training:/env/app/converted_model.tflite .
       tags: training
+
+    - name: Collect model
+      fetch:
+        src: /home/ubuntu/tensorflow-to-larod-artpec8/converted_model.tflite
+        dest: /app/converted_model.tflite
+      tags: training, cleanup
 
 - name: Cleanup
   hosts: localhost
@@ -90,12 +98,8 @@
     - "../inventory/group_vars/vars.yaml"
   gather_facts: false
   tasks:
-    - name: Collecting model
-      shell:
-        scp -r -i "../{{ key_pair_name }}.pem" ubuntu@{{ ec2['instances'][0].public_dns_name }}:/home/ubuntu/tensorflow-to-larod-artpec8/converted_model.tflite .
-      tags: training
 
-    - name: Gathering information about EC2 instance
+    - name: Gather information about EC2 instance
       ec2_instance_info:
         region: "{{ aws_region }}"
         filters:
@@ -104,7 +108,7 @@
       register: ec2_instances
       tags: cleanup
 
-    - name: Terminating EC2 instance
+    - name: Terminate EC2 instance
       ec2_instance:
         key_name: "{{ key_pair_name }}"
         region: "{{ aws_region }}"
@@ -114,7 +118,7 @@
       loop: "{{ ec2_instances.instances }}"
       tags: cleanup
 
-    - name: Removing from known_hosts
+    - name: Remove from "known_hosts"
       known_hosts:
         name: "{{ item.public_dns_name }}"
         path: "~/.ssh/known_hosts"
