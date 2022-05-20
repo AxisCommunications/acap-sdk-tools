@@ -12,7 +12,7 @@ Some applications need a trained model to infer a result. We provide examples li
 ## Structure of this tool
 
 ```sh
-ansible-training
+train-tensorflow-model-using-aws
 ├── inventory
 │   ├── group_vars
 │   │   └── vars.yaml

@@ -1,8 +1,10 @@
 *Copyright (C) 2022, Axis Communications AB, Lund, Sweden. All Rights Reserved.*
 
-# Camera calibration
+# Camera calibration for lens distortion
 
-Images captured by an Axis camera are sometimes visibly distorted in the edges. That is because Axis cameras prioritize capturing a wide area over producing rectilinear images. Distortion can make it difficult to detect objects or to measure distances. To correct this, we can calibrate the image and straighten it.
+Images captured by an Axis camera are sometimes visibly distorted in the edges. That is because Axis cameras prioritize capturing a wide area over producing rectilinear images. Distortion can make it difficult to detect objects or to measure distances. To correct this, we can calibrate the image and straighten it. In the image below, you can see an example of the effects of distortion: some objects, like the window, might not be correctly classified; and some distances variate, like indicated by the overlayed colored lines.
+
+![Distorted and undistored frame](data/distortion.svg)
 
 This README file explains how to get calibration parameters from an Axis camera using a dataset of images captured by the same camera and Apriltag detection library from [ETH-Z](https://github.com/ethz-asl/ethzasl_apriltag2).
 
@@ -19,7 +21,7 @@ We'll go through the steps, starting with making a dataset with the Axis camera 
 Below is the structure and scripts used in the tool:
 
 ```sh
-camera-calibration
+camera-calibration-for-lens-distortion
 ├── data
 │   ├── aprilgrid_tele
 │   └── aprilgird_wide
