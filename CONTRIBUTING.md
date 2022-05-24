@@ -73,13 +73,13 @@ Enhancement suggestions are tracked as [GitHub issues][issues].
 Start by [forking the repository](https://docs.github.com/en/github/getting-started-with-github/fork-a-repo), i.e. copying the repository to your account to grant you write access. Continue with cloning the forked repository to your local machine.
 
 ```sh
-git clone https://github.com/<your username>/acap-sdk-extras.git
+git clone https://github.com/<your username>/acap-sdk-tools.git
 ```
 
 Navigate into the cloned directory and create a new branch:
 
 ```sh
-cd acap-sdk-extras
+cd acap-sdk-tools
 git switch -c <branch name>
 ```
 
@@ -163,7 +163,7 @@ shfmt -d .
 To lint only a specific file, replace `.` or `$(COMMAND)` with the file path.
 
 <!-- markdownlint-disable MD034 -->
-[issues]: https://github.com/AxisCommunications/acap-sdk-extras/issues
-[issues_new]: https://github.com/AxisCommunications/acap-sdk-extras/issues/new
-[issues_bugs]: https://github.com/AxisCommunications/acap-sdk-extras/issues?q=label%3Abug
+[issues]: https://github.com/AxisCommunications/acap-sdk-tools/issues
+[issues_new]: https://github.com/AxisCommunications/acap-sdk-tools/issues/new
+[issues_bugs]: https://github.com/AxisCommunications/acap-sdk-tools/issues?q=label%3Abug
 <!-- markdownlint-enable MD034 -->

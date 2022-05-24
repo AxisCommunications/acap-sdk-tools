@@ -1,0 +1,32 @@
+name: Build train-tensorflow-model-using-aws tool
+
+on:
+  push:
+    paths:
+      - '**'
+      - '!.github/workflows/example-checks.yml'
+      - '!README.md'
+      - '!LICENSE'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      EXREPO: acap-sdk-tools
+      EXNAME: train-tensorflow-model-using-aws
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: qemu cross compiler
+        run: |
+            docker run --rm --privileged multiarch/qemu-user-static --credential yes --persistent yes
+
+      - name: Build train-tensorflow-model-using-aws application
+        env:
+          example: ${{ env.EXNAME }}
+          imagetag: ${{ env.EXREPO }}_${{ env.EXNAME }}:1.0
+        run: |
+          cd $EXNAME
+          docker build --no-cache --tag $imagetag .
+          cd ..
+          docker image rm -f $imagetag
