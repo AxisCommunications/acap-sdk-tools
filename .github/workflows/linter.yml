@@ -9,10 +9,10 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@a37ce9120846195fa4ece8f58b268e6043cb2f26 # v3.7.0
         with:
           fetch-depth: 0
-      - uses: super-linter/super-linter/slim@v5
+      - uses: super-linter/super-linter/slim@a8150b40c89574adb5f68bf9502b890a236a06b3 # v5.7.2
         env:
           VALIDATE_ALL_CODEBASE: true
           DEFAULT_BRANCH: main
