@@ -9,7 +9,7 @@ ARG TARGET_TOOLCHAIN=aarch64-linux-gnu
 FROM axisecp/acap-computer-vision-sdk:latest-aarch64-devel AS cv-sdk
 
 # Define the runtime image
-FROM arm64v8/ubuntu:20.04
+FROM arm64v8/ubuntu:26.04@sha256:212ff99a819739964a0befad2594c9828e0d68d3d9d75442e179f700ebe4cdc5
 
 # Get packages from the CV SDK
 COPY --from=cv-sdk /axis/python /
